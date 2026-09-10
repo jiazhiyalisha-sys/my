@@ -1,0 +1,13 @@
+# === 売上データの誤公開ガード ===
+# このリポジトリは public です。note の売上CSVには購入日時などが含まれるため、
+# 既定では追跡しません。意図して共有する場合のみ `git add -f data/xxx.csv` を使うこと。
+data/*.csv
+data/**/*.csv
+
+# 生成物（サンプルレポートだけは例として追跡する）
+reports/*
+!reports/SAMPLE_REPORT.md
+
+__pycache__/
+*.pyc
+.DS_Store
