@@ -1,0 +1,558 @@
+<title>note 有料記事 再起動プレイブック</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --paper:#F7F8F6;
+    --paper-2:#FFFFFF;
+    --paper-sunk:#EDF0EC;
+    --ink:#16211F;
+    --ink-2:#3C4A46;
+    --ink-3:#6B7873;
+    --rule:#D8DED8;
+    --rule-soft:#E6EAE4;
+    --accent:#0E8C7A;
+    --accent-deep:#0A6357;
+    --accent-wash:#E4F1ED;
+    --warn:#9A6B0E;
+    --warn-wash:#F7EFDD;
+    --stop:#A33B2A;
+    --stop-wash:#F6E7E3;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --disp:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+    --body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#101817;
+      --paper-2:#18211F;
+      --paper-sunk:#131C1A;
+      --ink:#E8EEEA;
+      --ink-2:#BCC7C2;
+      --ink-3:#8B9992;
+      --rule:#2C3835;
+      --rule-soft:#222D2B;
+      --accent:#4CC3AD;
+      --accent-deep:#7FD8C6;
+      --accent-wash:#15302B;
+      --warn:#D6A83F;
+      --warn-wash:#2E2716;
+      --stop:#E08A76;
+      --stop-wash:#331D18;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#101817;
+    --paper-2:#18211F;
+    --paper-sunk:#131C1A;
+    --ink:#E8EEEA;
+    --ink-2:#BCC7C2;
+    --ink-3:#8B9992;
+    --rule:#2C3835;
+    --rule-soft:#222D2B;
+    --accent:#4CC3AD;
+    --accent-deep:#7FD8C6;
+    --accent-wash:#15302B;
+    --warn:#D6A83F;
+    --warn-wash:#2E2716;
+    --stop:#E08A76;
+    --stop-wash:#331D18;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.85;
+    padding-inline:20px;
+    padding-block:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin-inline:auto;padding-block:56px 96px;display:flex;flex-direction:column;gap:0}
+
+  /* ---- masthead ---- */
+  .mast{border-bottom:2px solid var(--ink);padding-bottom:22px;display:flex;flex-direction:column;gap:14px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep)}
+  h1{
+    font-family:var(--disp);font-weight:700;font-size:clamp(30px,6.4vw,46px);
+    line-height:1.3;margin:0;text-wrap:balance;letter-spacing:.01em;
+  }
+  .dek{color:var(--ink-2);font-size:15.5px;margin:0;max-width:60ch}
+  .mast-meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:6px 18px}
+
+  /* ---- sections ---- */
+  section{padding-block:44px;border-bottom:1px solid var(--rule-soft)}
+  section:last-of-type{border-bottom:none}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:6px}
+  .sec-num{
+    font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);
+    flex:0 0 auto;padding-top:.5em;font-variant-numeric:tabular-nums;
+  }
+  h2{
+    font-family:var(--disp);font-weight:700;font-size:clamp(21px,3.6vw,26px);
+    line-height:1.45;margin:0;text-wrap:balance;
+  }
+  .sec-body{padding-left:0}
+  @media (min-width:640px){ .sec-body{padding-left:44px} }
+  h3{
+    font-family:var(--body);font-weight:700;font-size:16.5px;line-height:1.6;
+    margin:30px 0 8px;color:var(--ink);
+  }
+  h3:first-child{margin-top:18px}
+  p{margin:0 0 14px;max-width:66ch}
+  p:last-child{margin-bottom:0}
+  strong{font-weight:700}
+  em{font-style:normal;background:linear-gradient(transparent 62%,var(--accent-wash) 62%);font-weight:500}
+  a{color:var(--accent-deep);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2.5px}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  ul,ol{margin:0 0 16px;padding-left:1.35em;max-width:66ch}
+  li{margin-bottom:7px}
+  li::marker{color:var(--ink-3)}
+  ul.tight li,ol.tight li{margin-bottom:3px}
+
+  /* ---- the diagnosis math block ---- */
+  .math{
+    background:var(--paper-2);border:1px solid var(--rule);
+    padding:22px 24px;display:flex;flex-direction:column;gap:2px;margin:20px 0 8px;
+  }
+  .math-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding-block:9px;border-bottom:1px dotted var(--rule)}
+  .math-row:last-child{border-bottom:none;border-top:2px solid var(--ink);margin-top:6px;padding-top:13px}
+  .math-k{font-size:14.5px;color:var(--ink-2)}
+  .math-v{font-family:var(--mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .math-row:last-child .math-k{font-weight:700;color:var(--ink)}
+  .math-row:last-child .math-v{color:var(--accent-deep);font-size:17px}
+  .math-cap{font-size:12.5px;color:var(--ink-3);margin:10px 0 0;line-height:1.7}
+
+  /* ---- funnel ---- */
+  .funnel{margin:24px 0 10px;display:flex;flex-direction:column;gap:0}
+  .tier{display:flex;flex-direction:column;gap:10px}
+  .tier-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    background:var(--paper-2);border:1px solid var(--rule);padding:9px 13px;
+    font-size:13.5px;line-height:1.5;flex:1 1 auto;min-width:0;
+  }
+  .chip b{display:block;font-size:12px;font-family:var(--mono);color:var(--accent);font-weight:600;letter-spacing:.04em}
+  .arrow{display:flex;justify-content:center;color:var(--ink-3);font-size:13px;padding-block:12px;font-family:var(--mono)}
+  .tier.sell .chip{border-color:var(--accent);background:var(--accent-wash);border-width:1.5px}
+  .tier.sell .chip b{color:var(--accent-deep)}
+
+  /* ---- checklist ---- */
+  .check{list-style:none;padding:0;margin:18px 0;display:flex;flex-direction:column;gap:0;max-width:none}
+  .check li{
+    display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start;
+    margin:0;padding-block:13px;border-bottom:1px solid var(--rule-soft);
+  }
+  .check li:first-child{border-top:1px solid var(--rule-soft)}
+  .check-n{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink-3);padding-top:.35em;font-variant-numeric:tabular-nums}
+  .check-b{font-size:14.5px;line-height:1.75}
+  .check-b b{display:block;font-weight:700;font-size:15px;margin-bottom:2px}
+  .check-b span{color:var(--ink-2)}
+
+  /* ---- template block ---- */
+  .tpl{
+    background:var(--paper-sunk);border-left:3px solid var(--accent);
+    padding:20px 22px;margin:18px 0;font-size:14.5px;
+  }
+  .tpl h4{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent-deep);margin:0 0 12px;font-weight:600;
+  }
+  .tpl ol{padding-left:1.5em;margin:0}
+  .tpl ol li{margin-bottom:11px;line-height:1.75}
+  .tpl ol li b{font-weight:700}
+  .tpl ol li i{font-style:normal;display:block;color:var(--ink-3);font-size:13px;margin-top:2px}
+  .quote{
+    font-family:var(--mono);font-size:13px;line-height:1.85;background:var(--paper-2);
+    border:1px dashed var(--rule);padding:12px 14px;margin-top:7px;color:var(--ink-2);
+    overflow-x:auto;
+  }
+
+  /* ---- tables ---- */
+  .t-scroll{overflow-x:auto;margin:18px 0;border:1px solid var(--rule)}
+  table{border-collapse:collapse;width:100%;font-size:14px;background:var(--paper-2)}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:600;background:var(--paper-sunk);white-space:nowrap;
+  }
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .hi td{background:var(--accent-wash)}
+
+  /* ---- week plan ---- */
+  .weeks{display:flex;flex-direction:column;gap:0;margin:20px 0}
+  .week{display:grid;grid-template-columns:1fr;gap:6px;padding-block:20px;border-top:1px solid var(--rule)}
+  @media (min-width:600px){ .week{grid-template-columns:112px 1fr;gap:20px} }
+  .week:last-child{border-bottom:1px solid var(--rule)}
+  .week-t{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent-deep);letter-spacing:.04em;padding-top:.25em}
+  .week-t span{display:block;color:var(--ink-3);font-weight:400;margin-top:3px;letter-spacing:0}
+  .week-b b{display:block;font-family:var(--disp);font-size:17px;font-weight:700;margin-bottom:8px;line-height:1.5}
+  .week-b ul{margin:0;padding-left:1.3em}
+  .week-b li{font-size:14.5px;margin-bottom:5px}
+
+  /* ---- callouts ---- */
+  .note-box{padding:16px 20px;margin:20px 0;font-size:14.5px;line-height:1.8;border:1px solid var(--rule)}
+  .note-box p{max-width:none}
+  .note-box.stop{background:var(--stop-wash);border-color:color-mix(in srgb,var(--stop) 35%,transparent)}
+  .note-box.warn{background:var(--warn-wash);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+  .note-box b{display:block;margin-bottom:5px}
+  .note-box.stop b{color:var(--stop)}
+  .note-box.warn b{color:var(--warn)}
+
+  .ng{list-style:none;padding:0;margin:18px 0}
+  .ng li{display:grid;grid-template-columns:20px 1fr;gap:11px;margin-bottom:12px;font-size:14.5px;line-height:1.75}
+  .ng li::before{content:"×";font-family:var(--mono);color:var(--stop);font-weight:600;font-size:15px;line-height:1.75}
+  .ng li b{font-weight:700}
+
+  /* ---- sources ---- */
+  .sources{font-size:13px;color:var(--ink-3);line-height:1.85}
+  .sources ul{padding-left:1.2em;max-width:none}
+  .sources li{margin-bottom:6px}
+  .foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11.5px;color:var(--ink-3);line-height:1.9}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">note monetization · playbook</div>
+    <h1>1冊で止まったnoteを<br>売れ続ける状態に戻す</h1>
+    <p class="dek">「1冊売れて、それから沈黙」は才能の問題ではなく、ほぼ確実に<strong>導線の本数が足りていない</strong>という構造の問題です。原因の特定から、記事の型、30日の実行計画までを1枚にまとめました。</p>
+    <div class="mast-meta"><span>2026年9月版</span><span>note公式の手数料・価格データ準拠</span></div>
+  </header>
+
+  <!-- 01 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">01</div><h2>まず原因を特定する：最初の1冊は「知人＋瞬間風速」で売れている</h2></div>
+    <div class="sec-body">
+      <p>有料記事の最初の1冊は、ほぼ例外なく<em>公開直後の告知で届いた数十人</em>の中から出ます。この数十人は一度使い切ったら二度と発生しません。つまり2冊目が出ないのは、記事が悪いからではなく、<strong>記事に人が流れ込む経路が公開直後の一瞬しか存在しなかった</strong>からです。</p>
+      <p>noteは記事を探す人の検索行動が弱く、有料記事そのものはnote内のおすすめにも乗りにくい構造です。有料記事を置いただけの状態は、<strong>人通りのない路地に店を出した</strong>のと同じです。やるべきことは新しい有料記事を書くことではなく、店の前に道を通すことです。</p>
+      <h3>売れない理由の切り分け（この順で確認する）</h3>
+      <ol>
+        <li><strong>有料記事ページのビュー数が月100未満</strong>　→ 集客の問題。02〜04へ。ここが9割です。</li>
+        <li><strong>ビューはあるが購入が0（購入率1%未満）</strong>　→ 記事の問題。05〜07へ。</li>
+        <li><strong>買われるが2本目が売れない</strong>　→ 商品ラインの問題。08へ。</li>
+      </ol>
+      <p>noteのダッシュボードで有料記事の月間ビュー数を見てください。この数字が二桁なら、記事を書き直しても売上は動きません。</p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">02</div><h2>必要なアクセス数を逆算する：「月3万円」に必要なのは月8,500PV</h2></div>
+    <div class="sec-body">
+      <p>感覚で運用すると永遠に改善しません。有料記事の購入率は<strong>販売ページのビューに対して1〜5%</strong>が現実的なレンジです（無料部分の設計が良ければ3〜5%、弱いと1%以下）。控えめに2%で逆算します。</p>
+      <div class="math">
+        <div class="math-row"><span class="math-k">目標月商</span><span class="math-v">30,000円</span></div>
+        <div class="math-row"><span class="math-k">単価（実用系の売れ筋）</span><span class="math-v">1,800円</span></div>
+        <div class="math-row"><span class="math-k">必要販売数</span><span class="math-v">17冊 / 月</span></div>
+        <div class="math-row"><span class="math-k">購入率 2% と仮定</span><span class="math-v">÷ 0.02</span></div>
+        <div class="math-row"><span class="math-k">有料記事ページに必要なビュー</span><span class="math-v">850 PV / 月</span></div>
+        <div class="math-row"><span class="math-k">無料記事 → 有料記事のクリック率 10%</span><span class="math-v">÷ 0.10</span></div>
+        <div class="math-row"><span class="math-k">無料記事に必要な合計ビュー</span><span class="math-v">8,500 PV / 月</span></div>
+      </div>
+      <p class="math-cap">＝ 月8,500PVは、1本あたり月850PVの無料記事が10本あれば届く水準です。月850PVは「そこそこ読まれる無料記事」であって、バズではありません。<strong>バズらずに積み上げれば到達できる</strong>という点が重要です。</p>
+      <h3>ここから決まる優先順位</h3>
+      <p>次に書くべきものは<strong>2本目の有料記事ではなく、有料記事へ流すための無料記事10本</strong>です。有料記事と無料記事の比率は <strong>1 : 8〜10</strong> を目安にしてください。1冊しか売れていない段階で有料記事を増やすのは、客のいない店に商品棚を足す行為です。</p>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">03</div><h2>導線マップ：4つの入口 → 信頼 → 販売</h2></div>
+    <div class="sec-body">
+      <p>売れている人は例外なく、この3層を全部持っています。どれか1つではなく、<strong>4つの入口すべてから同じ1本の有料記事に集める</strong>のが設計の要点です。</p>
+      <div class="funnel">
+        <div class="tier">
+          <div class="tier-label">入口 / 流入をつくる</div>
+          <div class="chips">
+            <div class="chip"><b>SEARCH</b>Google・note検索<br>悩みワードの無料記事</div>
+            <div class="chip"><b>NOTE REC</b>noteのおすすめ<br>一次情報・体験記事</div>
+            <div class="chip"><b>X</b>Xからの誘導<br>記事の切り抜き投稿</div>
+            <div class="chip"><b>REPEAT</b>フォロワー再訪<br>連載・更新通知</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="tier">
+          <div class="tier-label">信頼 / 「この人から買ってよい」を作る</div>
+          <div class="chips">
+            <div class="chip"><b>PROFILE</b>プロフィール1行目に実績と数字</div>
+            <div class="chip"><b>PINNED</b>固定表示に代表無料記事＋有料記事</div>
+            <div class="chip"><b>PROOF</b>購入者の声・実データ・失敗談</div>
+          </div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="tier sell">
+          <div class="tier-label">販売 / 看板商品は1本に絞る</div>
+          <div class="chips">
+            <div class="chip"><b>OFFER</b>有料記事（看板商品）<br>全ての無料記事から常設リンク</div>
+            <div class="chip"><b>LOOP</b>購入 → 感想依頼 → 記事に追記<br>→ 次の購入者の判断材料に</div>
+          </div>
+        </div>
+      </div>
+      <h3>常設導線を置く7か所（今日30分で全部できます）</h3>
+      <ul class="check">
+        <li><span class="check-n">01</span><span class="check-b"><b>noteプロフィール文の1行目</b><span>肩書きより先に「誰の、どの悩みを、どう解決したか」を数字で。末尾に有料記事リンク。</span></span></li>
+        <li><span class="check-n">02</span><span class="check-b"><b>クリエイターページの記事固定表示</b><span>上段に入口になる無料記事、下段に有料記事。有料記事だけを固定すると警戒されます。</span></span></li>
+        <li><span class="check-n">03</span><span class="check-b"><b>全無料記事の末尾に定型ブロック</b><span>「◯◯で詰まっている方へ：手順を全部まとめた記事があります」＋リンク。過去記事にも遡って全部入れる。ここが最大の流入源になります。</span></span></li>
+        <li><span class="check-n">04</span><span class="check-b"><b>無料記事の目次の直上に1行</b><span>「この記事は概要です。実際の手順は詳細版にあります」。最後まで読まない人を拾えます。</span></span></li>
+        <li><span class="check-n">05</span><span class="check-b"><b>無料記事＋有料記事を1つのマガジンに束ねる</b><span>マガジンはフォローされ、note内で回遊されます。無料記事を入口、有料記事を最終巻に。</span></span></li>
+        <li><span class="check-n">06</span><span class="check-b"><b>Xのプロフィール＋固定ポスト</b><span>固定ポストは「有料記事の宣伝」ではなく「無料で読める要点スレッド」にし、その最後に有料リンク。</span></span></li>
+        <li><span class="check-n">07</span><span class="check-b"><b>Xの通常投稿はリンクを本文に入れず、リプ欄に置く</b><span>本文に外部リンクを入れると表示が伸びにくくなります。本文は結論だけ、リンクは自分の返信に。</span></span></li>
+      </ul>
+      <div class="note-box warn">
+        <b>ここを飛ばすと何をしても売れません</b>
+        <p>03の「全無料記事の末尾に定型ブロック」は、既に公開済みの記事すべてに手作業で入れてください。記事が20本あれば20本です。これは新規記事を1本書くより確実に売上に効きます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">04</div><h2>入口になる無料記事10本の型</h2></div>
+    <div class="sec-body">
+      <p>無料記事は「有料記事と同じテーマの周辺」を埋めます。バラバラのテーマで書くと、読者が有料記事に興味を持つ確率が下がります。<strong>有料記事1本を中心に、同じ悩みを持つ人が検索する言葉で10本</strong>です。</p>
+      <div class="t-scroll">
+        <table>
+          <thead><tr><th>#</th><th>型</th><th>効く理由</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>失敗談（同テーマで自分がやらかした話）</td><td>一次情報として最も強く、noteのおすすめに最も乗りやすい</td></tr>
+            <tr><td class="num">2</td><td>実データ公開（◯日続けた結果、数字を全部出す）</td><td>検証可能性があり、信頼が一度で立つ</td></tr>
+            <tr><td class="num">3</td><td>有料記事の手順のうち1つを完全無料公開</td><td>「残りも本物だ」という最強の購入根拠になる</td></tr>
+            <tr><td class="num">4</td><td>初心者が最初にやるべき1つだけ</td><td>検索流入が取りやすく、次の一手として有料記事が自然</td></tr>
+            <tr><td class="num">5</td><td>用語・前提の解説</td><td>Google検索の入口。地味だが安定して流入が続く</td></tr>
+            <tr><td class="num">6</td><td>使っている道具・ツールのレビュー</td><td>指名検索で来る。購買意欲の高い読者が来る</td></tr>
+            <tr><td class="num">7</td><td>よくある質問へのまとめ回答</td><td>読者の言葉がそのままタイトルになる</td></tr>
+            <tr><td class="num">8</td><td>他の方法との比較（Aではなくなぜ B か）</td><td>比較検討中の人を捕まえられる</td></tr>
+            <tr><td class="num">9</td><td>ビフォーアフター（画面・成果物の実物）</td><td>視覚的証明。スクショを惜しまない</td></tr>
+            <tr><td class="num">10</td><td>買ってくれた人の事例・感想の紹介</td><td>社会的証明。1件でも書く価値がある</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">
+        <p><strong>2026年2月にnoteのおすすめ（レコメンド）は刷新され、AIが記事の中身を読んで内容に合う読者へ届ける方式になりました。</strong>note公式（CXO 深津貴之氏）が示した優先方針は、<em>一次情報・生の体験の記録・気づき・失敗談からの学び・継続的な実験の記録・一次創作</em>です。逆に「ネット上の情報を要約し直しただけ」「AIで大量生成した重複コンテンツ」は推されにくくなっています。上の1・2・9番の型が今いちばん効くのはこのためです。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">05</div><h2>無料エリアの設計：10ブロックの順番がそのまま購入率</h2></div>
+    <div class="sec-body">
+      <p>有料記事で最も改善効果が大きいのは無料エリアです。よくある失敗は2つで、<strong>①あらすじだけで中身が想像できない</strong>（買う理由がない）、<strong>②無料で満足させてしまう</strong>（買う必要がない）。この2つを同時に避ける順番があります。</p>
+      <div class="tpl">
+        <h4>無料エリア 10ブロック構成</h4>
+        <ol>
+          <li><b>結論の一部を数字で先に出す</b><i>「3か月で◯◯が△△になりました。やったのは次の4つだけです」。ここで読む理由を確定させる。</i></li>
+          <li><b>読者の状況を言語化する</b><i>「◯◯を試したけど△△で止まっている」——自分のことだと思わせる。ターゲットを1人に絞って書く。</i></li>
+          <li><b>なぜ自分が書けるのか（一次情報）</b><i>実体験・期間・失敗の具体。肩書きではなく「やった量」を出す。</i></li>
+          <li><b>この記事を読んだ後の状態（Before → After）</b><i>得られるものを箇条書きで4〜6個。抽象語（効率化・本質）を使わず、動作で書く。</i></li>
+          <li><b>目次で有料部分の見出しを全部見せる</b><i>最重要。中身は隠して「地図」は全部見せる。何が書かれているか分からない記事は買われません。</i></li>
+          <li><b>ノウハウを1つだけ完全公開する</b><i>出し惜しみしない。ここの質が有料部分の品質保証になる。テンプレ1個、手順1ステップを丸ごと。</i></li>
+          <li><b>向いている人／向いていない人</b><i>「こういう人は買わないでください」と書く。除外は信頼を上げ、返金クレームも減ります。</i></li>
+          <li><b>リスクを取り除く約束</b><i>質問対応の有無、更新の方針（購入者は追記も無料で読めます）、想定所要時間。</i></li>
+          <li><b>価格の根拠</b><i>「この内容を外注すると◯円／この失敗を避けられれば◯時間」。値上げ予定があるなら明記。</i></li>
+          <li><b>購入ボタン直前の一行</b><i>煽らず、判断を助ける一文で終える。</i>
+            <div class="quote">ここから先は、私が実際に使っている手順そのものです。<br>先に無料部分の◯◯だけ試してみて、続きが必要だと思ったら戻ってきてください。</div>
+          </li>
+        </ol>
+      </div>
+      <h3>無料エリアの長さの目安</h3>
+      <p>全体の<strong>20〜30%</strong>。文字数でいえば全体8,000字なら1,800〜2,400字程度。短すぎると判断材料がなく、長すぎると満足して離脱します。目安として、無料部分を読み終えた人が<em>「やり方は分かった、でも自分のケースに落とす手順がない」</em>という状態になっていれば正解です。</p>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">06</div><h2>有料エリアの設計：返金されず、口コミが出る中身にする</h2></div>
+    <div class="sec-body">
+      <p>有料部分の役割は「満足」ではなく<strong>読者が実際に動けること</strong>です。動けた人だけが感想を書き、その感想が次の購入を生みます。</p>
+      <ul>
+        <li><strong>冒頭に「この記事の使い方」</strong>——どこから手を付け、何分で何ができるか。読者を迷子にしない。</li>
+        <li><strong>手順はコピペできる粒度まで下げる</strong>——「分析する」ではなく、実際の文面・チェックリスト・数値基準・使うボタンの名前まで。</li>
+        <li><strong>スクリーンショットと実データを惜しまない</strong>——文章より速く信頼が伝わる。売上画面、ビフォーアフター、操作画面。</li>
+        <li><strong>失敗例を必ず入れる</strong>——「私はここで◯◯して失敗した」。成功事例だけの記事は薄く見えます。</li>
+        <li><strong>巻末に質問窓口と更新履歴</strong>——更新履歴があるだけで「生きている記事」に見え、値上げの正当化にもなります。</li>
+        <li><strong>購入者特典を1つ</strong>——テンプレート、チェックリスト、相談1回など。感想を書いてもらう自然な口実にもなります。</li>
+      </ul>
+      <div class="tpl">
+        <h4>購入者に感想を依頼する文面（巻末に置く）</h4>
+        <div class="quote">最後まで読んでいただきありがとうございます。<br>もしこの記事が役に立ったら、Xで「#(あなたのタグ)」を付けて<br>一言だけ感想をいただけると嬉しいです。<br>いただいた感想は（許可をとって）この記事にも追記していきます。</div>
+        <p style="margin-top:14px;font-size:13.5px;color:var(--ink-3)">1件でも感想が付いたら、無料エリアの7番付近に引用して掲載してください。社会的証明はゼロと1件の差が最も大きく、購入率がはっきり動きます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">07</div><h2>タイトル：「読者の言葉」で、範囲を狭く、結果を具体に</h2></div>
+    <div class="sec-body">
+      <p>タイトルは<strong>自分の言葉ではなく、読者が検索窓に打ち込む言葉</strong>で作ります。対象を狭めるほど売れます。</p>
+      <div class="t-scroll">
+        <table>
+          <thead><tr><th>型</th><th>形</th></tr></thead>
+          <tbody>
+            <tr><td>対象＋状況＋結果</td><td>「◯◯の人が△△だけで□□になるまでの全手順」</td></tr>
+            <tr><td>期間＋数字</td><td>「◯日で△△を□□にした記録（全データ公開）」</td></tr>
+            <tr><td>失敗の回避</td><td>「◯◯で私が溶かした△△と、同じ失敗を避ける□個のチェック」</td></tr>
+            <tr><td>やらないことの提示</td><td>「◯◯をやめて△△に絞ったら□□になった話」</td></tr>
+            <tr><td>丸ごと公開</td><td>「実際に使っている◯◯のテンプレート□個をそのまま渡します」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="tight">
+        <li>「〜について」「〜のコツ」「〜まとめ」は避ける——読者に得られるものが伝わりません。</li>
+        <li>抽象語（本質・思考法・マインド）は実績が立つまで使わない。実績ゼロの抽象論は最も売れません。</li>
+        <li>note内の表示では<strong>前半20字前後</strong>で切られます。重要語を必ず前半へ。</li>
+        <li>ハッシュタグは内容と一致するものを3〜5個。無関係な人気タグを盛るのは逆効果です。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">08</div><h2>価格：note公式データでは実用系1,800円・読み物系980円が売れ筋</h2></div>
+    <div class="sec-body">
+      <p>note公式が2024年12月〜2025年11月の約30万件の有料記事を分析した結果、<strong>売上上位20%に入る記事の価格は実用系で1,800円、読み物系で980円</strong>でした。「安くすれば売れる」は誤りで、100〜300円は「中身が薄い」というシグナルになり、かつ手数料負けします。</p>
+      <h3>実績が薄い段階の段階的値上げ</h3>
+      <div class="weeks">
+        <div class="week"><div class="week-t">STAGE 1<span>販売 0〜5冊</span></div><div class="week-b"><b>500〜980円</b><ul><li>目的は売上ではなく<strong>感想と購入者の実例を集めること</strong></li><li>「◯冊までこの価格、以降値上げします」と明記する</li></ul></div></div>
+        <div class="week"><div class="week-t">STAGE 2<span>感想が3件</span></div><div class="week-b"><b>1,480円</b><ul><li>無料エリアに感想を引用し、内容を1〜2章追記してから上げる</li><li>値上げ予告を先に告知すると、予告期間に駆け込みで売れます</li></ul></div></div>
+        <div class="week"><div class="week-t">STAGE 3<span>安定して売れる</span></div><div class="week-b"><b>1,800〜2,980円</b><ul><li>更新履歴・購入者特典・質問対応をセットにして単価を正当化</li><li>ここから先はメンバーシップ（月額）への入口として使う</li></ul></div></div>
+      </div>
+      <p class="math-cap">現在のnoteの価格設定範囲は100円〜50,000円（noteプレミアム会員は上限が更に高い）です。価格の上下を頻繁に繰り返すのは信頼を損なうので、<strong>上げる方向にだけ、告知してから動かす</strong>のが原則です。</p>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">09</div><h2>手取りの現実：カード決済なら約85%</h2></div>
+    <div class="sec-body">
+      <p>手数料は<strong>①決済手数料 → ②note利用料 → ③振込手数料</strong>の3段階で、②は①を引いた後の金額にかかります。振込手数料270円は<em>1回の振込ごと</em>で、記事1本ごとではありません（まとめて振り込めば影響は小さくなります）。</p>
+      <div class="t-scroll">
+        <table>
+          <thead><tr><th>販売価格</th><th>決済手数料</th><th>note利用料 10%</th><th>手取り（振込前）</th><th>率</th></tr></thead>
+          <tbody>
+            <tr><td class="num">500円</td><td class="num">−25</td><td class="num">−48</td><td class="num">428円</td><td class="num">85.5%</td></tr>
+            <tr><td class="num">980円</td><td class="num">−49</td><td class="num">−93</td><td class="num">838円</td><td class="num">85.5%</td></tr>
+            <tr class="hi"><td class="num">1,800円</td><td class="num">−90</td><td class="num">−171</td><td class="num">1,539円</td><td class="num">85.5%</td></tr>
+            <tr><td class="num">2,980円</td><td class="num">−149</td><td class="num">−283</td><td class="num">2,548円</td><td class="num">85.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="tight">
+        <li>上の表は<strong>クレジットカード決済（5%）</strong>の場合。携帯キャリア決済は15%、PayPayは7%程度で、キャリア決済だと手取りは約76%まで落ちます。</li>
+        <li>note利用料は<strong>有料記事・メンバーシップが10%、定期購読マガジンは20%</strong>。同じ月額課金ならメンバーシップの方が手数料面で有利です。</li>
+        <li>安い記事ほど振込手数料の相対負担が重くなります。100〜300円の記事は労力に対してほぼ残りません。</li>
+      </ul>
+      <p class="math-cap">手数料率は改定されることがあります。実行前にnote公式ヘルプで現行レートを確認してください。</p>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>30日の実行計画</h2></div>
+    <div class="sec-body">
+      <p>新しい有料記事は1本も書きません。<strong>既にある1本を売れる状態にし、そこへの道を10本引く</strong>のが30日間の仕事です。</p>
+      <div class="weeks">
+        <div class="week">
+          <div class="week-t">DAY 1–3<span>導線の設置</span></div>
+          <div class="week-b"><b>書かずに、つなぐ</b><ul>
+            <li>03の7か所の導線をすべて設置（過去記事全部の末尾ブロックを含む）</li>
+            <li>noteプロフィールとXプロフィールを書き換える</li>
+            <li>無料記事＋有料記事をまとめたマガジンを1つ作る</li>
+            <li>現状の数値を記録：有料記事の月間ビュー・購入数・フォロワー数</li>
+          </ul></div>
+        </div>
+        <div class="week">
+          <div class="week-t">DAY 4–7<span>商品の作り直し</span></div>
+          <div class="week-b"><b>有料記事の無料エリアを10ブロック構成に全面改稿</b><ul>
+            <li>目次で有料部分の見出しを全公開する</li>
+            <li>ノウハウを1つ、無料エリアに丸ごと出す</li>
+            <li>「向いていない人」を明記する</li>
+            <li>価格をSTAGE 1〜2に合わせ、値上げ予告を入れる</li>
+            <li>最初の購入者1名に感想を依頼する（ここで社会的証明を1件作る）</li>
+          </ul></div>
+        </div>
+        <div class="week">
+          <div class="week-t">DAY 8–24<span>入口を積む</span></div>
+          <div class="week-b"><b>無料記事を週3本 × 約2.5週 = 8〜10本</b><ul>
+            <li>04の型の1・2・3番から着手（一次情報が最も推されやすい）</li>
+            <li>全記事に末尾の導線ブロックを入れる（テンプレ化して貼るだけにする）</li>
+            <li>公開ごとにXへ：本文は結論だけ、リンクは自分のリプ欄に</li>
+            <li>1日1回、同じテーマの他クリエイターの記事に具体的なコメントを残す（相互フォロー目的ではなく、読者と接点を作るため）</li>
+          </ul></div>
+        </div>
+        <div class="week">
+          <div class="week-t">DAY 25–30<span>測って直す</span></div>
+          <div class="week-b"><b>数字で次の一手を決める</b><ul>
+            <li>有料記事ページのビューが月100を超えたか（超えていなければ導線の問題）</li>
+            <li>ビュー100超で購入0なら、無料エリアの5番（目次公開）と6番（ノウハウ1つ公開）を見直す</li>
+            <li>最もビューが多かった無料記事のテーマを、次の有料記事のテーマにする</li>
+            <li>感想が3件たまったらSTAGE 2へ値上げ</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>毎週見る数字は4つだけ</h2></div>
+    <div class="sec-body">
+      <div class="t-scroll">
+        <table>
+          <thead><tr><th>指標</th><th>見方</th><th>悪いときの打ち手</th></tr></thead>
+          <tbody>
+            <tr><td>無料記事の合計ビュー</td><td>月8,500PVが月3万円ラインの目安</td><td>記事本数を増やす／検索ワードを見直す</td></tr>
+            <tr><td>有料記事ページのビュー</td><td>目標850PV/月。100未満は導線不足</td><td>03の7か所を再点検、末尾ブロックの文言を変える</td></tr>
+            <tr><td>購入率（購入 ÷ 有料記事ビュー）</td><td>2%が基準。1%未満は記事の問題</td><td>無料エリアを05の構成に、目次を全公開</td></tr>
+            <tr><td>感想・言及の件数</td><td>0件か1件以上かが最大の分岐</td><td>購入者に直接依頼、特典と引き換えにする</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>noteのダッシュボードで記事ごとのビュー数が取れます。毎週同じ曜日に4つだけ記録してください。<strong>改善したのに数字を記録していないと、何が効いたか永久に分かりません。</strong></p>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>やってはいけないこと</h2></div>
+    <div class="sec-body">
+      <ul class="ng">
+        <li><b>売れないからといって有料記事を増やす</b>——入口がない状態で商品を増やしても分母は増えません。無料記事を増やすのが先です。</li>
+        <li><b>AIに丸投げした要約記事を量産する</b>——2026年のレコメンド刷新で、重複性の高い生成コンテンツは明確に推されにくくなりました。AIを使うのは構成・校正・リサーチの補助まで。出す情報は自分の一次体験に。</li>
+        <li><b>無料エリアをあらすじだけにする</b>——中身が分からないものに人は払いません。目次は全公開が正解です。</li>
+        <li><b>逆に、無料エリアで全部満足させる</b>——「もう十分」で終わります。解決策の入口までで止めます。</li>
+        <li><b>相互フォロー・スキ回りでフォロワーを集める</b>——購買意欲ゼロの分母が増えるだけで、購入率が下がって判断を誤らせます。</li>
+        <li><b>価格を上げ下げして反応を見る</b>——既存購入者の信頼を失います。上げる方向にだけ、予告してから。</li>
+        <li><b>DMで売り込む</b>——note・Xともに最も嫌われ、アカウントの評価も落とします。</li>
+        <li><b>1〜2週間で判断して諦める</b>——検索流入は記事公開から効き始めるまで1〜3か月かかります。30日計画は「種を全部まく」期間で、収穫期はその後です。</li>
+      </ul>
+      <div class="note-box stop">
+        <b>最短で効く3つだけ選ぶなら</b>
+        <p>① 過去の全無料記事の末尾に有料記事への導線ブロックを入れる　② 有料記事の目次で有料部分の見出しを全公開する　③ 最初の購入者1名に感想をもらって無料エリアに載せる。この3つは今日から数日で終わり、いずれも購入率に直接効きます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sources">
+    <div class="sec-head"><div class="sec-num">—</div><h2>参照した情報</h2></div>
+    <div class="sec-body">
+      <ul>
+        <li><a href="https://hanapapa-side-business.com/note-monetization/">note手数料は何パーセント？有料記事10%・メンバーシップ10%・定期購読20%【2026年公式準拠】</a></li>
+        <li><a href="https://memberpay.jp/blog/note-sales-commission/">noteの手数料は高い？知っておきたい種類と利益を最大化する決済の選び方（メンバーペイ）</a></li>
+        <li><a href="https://note.com/harista/n/n91662a32be21">【2026年最新】note有料記事の価格設定完全ガイド｜実用系1,800円・読み物系980円の根拠</a></li>
+        <li><a href="https://note.com/fladdict/n/n5b78bb223b35">noteの推しアルゴリズムについて｜深津 貴之（note CXO、2026年1月）</a></li>
+        <li><a href="https://plus-web3.com/media/latestnews_1000_7398/">noteで読まれる記事の書き方 CXOが明かすAI時代に「推されるコンテンツ」の条件とは</a></li>
+        <li><a href="https://www.yukemuri-blog.com/note-paid-articles-selling-2/">note有料記事が売れない理由と改善策15選</a></li>
+        <li><a href="https://www.sungrove.co.jp/note-paid-article/">note有料記事での稼ぎ方！収益の仕組み・売れる記事の書き方・手数料まで徹底解説</a></li>
+        <li><a href="https://www.help-note.com/hc/ja/articles/900000163906-%E3%83%A1%E3%83%B3%E3%83%90%E3%83%BC%E3%82%B7%E3%83%83%E3%83%97%E3%81%A8%E3%81%AF">メンバーシップとは（noteヘルプセンター）</a></li>
+      </ul>
+      <p class="foot">購入率1〜5%・クリック率10%は一般的な実務レンジに基づく仮定値です。手数料率と価格上限はnote側で改定されることがあるため、実行前に公式ヘルプで確認してください。</p>
+    </div>
+  </section>
+
+</div>
