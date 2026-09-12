@@ -1,0 +1,755 @@
+<title>エッセイnoteの動線設計図</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#f5f6f9;
+    --surface:#ffffff;
+    --sunken:#ecedf4;
+    --ink:#141a29;
+    --ink-soft:#4e566b;
+    --ink-faint:#7b8298;
+    --rule:#d9dce6;
+    --rule-soft:#e8eaf1;
+    --ai:#2b4a7d;
+    --ai-soft:#e5ecf7;
+    --shu:#a93c29;
+    --shu-soft:#f7eae6;
+    --moss:#3a6550;
+    --moss-soft:#e6efea;
+    --shadow:0 1px 2px rgba(20,26,41,.05), 0 8px 24px -16px rgba(20,26,41,.22);
+    --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",'ヒラギノ明朝 ProN',serif;
+    --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0f1220;
+      --surface:#171c2b;
+      --sunken:#1e2435;
+      --ink:#e9ebf3;
+      --ink-soft:#a9afc3;
+      --ink-faint:#7c8399;
+      --rule:#2c3345;
+      --rule-soft:#232939;
+      --ai:#93b6e8;
+      --ai-soft:#1b2740;
+      --shu:#e4907c;
+      --shu-soft:#33211d;
+      --moss:#8dc0a3;
+      --moss-soft:#1b2a23;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1220;
+    --surface:#171c2b;
+    --sunken:#1e2435;
+    --ink:#e9ebf3;
+    --ink-soft:#a9afc3;
+    --ink-faint:#7c8399;
+    --rule:#2c3345;
+    --rule-soft:#232939;
+    --ai:#93b6e8;
+    --ai-soft:#1b2740;
+    --shu:#e4907c;
+    --shu-soft:#33211d;
+    --moss:#8dc0a3;
+    --moss-soft:#1b2a23;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding-inline:clamp(18px,4vw,40px);
+    padding-block:0 96px;
+  }
+
+  /* ---------- masthead ---------- */
+  header.mast{
+    padding-block:clamp(40px,7vw,76px) clamp(28px,4vw,40px);
+    border-bottom:1px solid var(--rule);
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .eyebrow{
+    font-size:.75rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ai);
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:.7em;
+  }
+  .eyebrow::after{content:"";height:1px;flex:1;background:var(--rule);min-width:20px}
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(1.9rem,5.2vw,2.75rem);
+    line-height:1.42;
+    letter-spacing:.01em;
+    margin:0;
+    text-wrap:balance;
+    max-width:24ch;
+  }
+  .standfirst{
+    font-family:var(--serif);
+    font-size:clamp(1rem,2.3vw,1.12rem);
+    line-height:2;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0;
+  }
+  .premise{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 10px;
+  }
+  .premise span{
+    font-size:.8rem;
+    line-height:1.6;
+    padding:5px 11px;
+    border:1px solid var(--rule);
+    border-radius:999px;
+    color:var(--ink-soft);
+    background:var(--surface);
+  }
+
+  /* ---------- verdict ---------- */
+  .verdict{
+    margin-block:clamp(32px,5vw,48px);
+    border-left:3px solid var(--shu);
+    background:var(--shu-soft);
+    padding:clamp(20px,3.5vw,30px) clamp(18px,3.5vw,34px);
+  }
+  .verdict h2{
+    font-family:var(--sans);
+    font-size:.8rem;
+    letter-spacing:.14em;
+    font-weight:700;
+    color:var(--shu);
+    margin:0 0 .8em;
+  }
+  .verdict p{margin:0 0 .9em;max-width:62ch}
+  .verdict p:last-child{margin-bottom:0}
+  .verdict strong{font-weight:700;border-bottom:2px solid color-mix(in srgb,var(--shu) 45%,transparent)}
+
+  /* ---------- sections ---------- */
+  .sec{
+    display:grid;
+    grid-template-columns:3.6rem minmax(0,1fr);
+    gap:0 1.8rem;
+    padding-block:clamp(34px,5vw,54px);
+    border-top:1px solid var(--rule-soft);
+  }
+  .sec:first-of-type{border-top:0}
+  .rail{
+    font-family:var(--mono);
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--ink-faint);
+    letter-spacing:.06em;
+    padding-top:.55em;
+    font-variant-numeric:tabular-nums;
+  }
+  .col{min-width:0}
+  h2.sh{
+    font-family:var(--serif);
+    font-size:clamp(1.35rem,3.4vw,1.7rem);
+    font-weight:700;
+    line-height:1.55;
+    margin:0 0 .2em;
+    text-wrap:balance;
+  }
+  .dek{
+    color:var(--ink-faint);
+    font-size:.92rem;
+    margin:0 0 1.6em;
+    max-width:58ch;
+  }
+  h3{
+    font-family:var(--sans);
+    font-size:1.02rem;
+    font-weight:700;
+    line-height:1.7;
+    margin:2.2em 0 .6em;
+    padding-bottom:.4em;
+    border-bottom:1px solid var(--rule-soft);
+  }
+  h3:first-child{margin-top:0}
+  h4{
+    font-size:.95rem;
+    font-weight:700;
+    margin:1.6em 0 .3em;
+    color:var(--ai);
+  }
+  .col p{margin:0 0 1.1em;max-width:62ch}
+  .col ul,.col ol{margin:0 0 1.3em;padding-left:1.3em;max-width:62ch}
+  .col li{margin-bottom:.5em}
+  .col li::marker{color:var(--ink-faint)}
+  em.note{
+    display:block;
+    font-style:normal;
+    font-size:.82rem;
+    line-height:1.8;
+    color:var(--ink-faint);
+    border-left:2px solid var(--rule);
+    padding-left:.9em;
+    margin:1.3em 0;
+    max-width:60ch;
+  }
+  code{
+    font-family:var(--mono);
+    font-size:.85em;
+    background:var(--sunken);
+    padding:.12em .4em;
+    border-radius:3px;
+  }
+
+  /* ---------- ladder ---------- */
+  .ladder{list-style:none;margin:0 0 1.6em;padding:0;display:flex;flex-direction:column;gap:10px}
+  .ladder li{
+    background:var(--surface);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    display:grid;
+    grid-template-columns:5.2rem minmax(0,1fr);
+    overflow:hidden;
+  }
+  .ladder .lv{
+    background:var(--sunken);
+    border-right:1px solid var(--rule);
+    padding:16px 10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    text-align:center;
+  }
+  .lv b{font-family:var(--mono);font-size:1.35rem;line-height:1;color:var(--ai);font-weight:700}
+  .lv span{font-size:.68rem;letter-spacing:.08em;color:var(--ink-faint)}
+  .ladder .meat{padding:15px 18px 16px}
+  .ladder h4{margin:0 0 .35em;color:var(--ink);font-size:1rem}
+  .ladder p{margin:0 0 .7em;font-size:.93rem;line-height:1.85;max-width:58ch}
+  .ladder p:last-child{margin-bottom:0}
+  .kv{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:.5em}
+  .kv b{
+    font-size:.76rem;font-weight:500;line-height:1.5;
+    padding:3px 9px;border-radius:2px;
+    background:var(--ai-soft);color:var(--ai);
+  }
+  .kv b.warn{background:var(--shu-soft);color:var(--shu)}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto;margin:0 0 1.4em;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.88rem}
+  caption{
+    caption-side:top;text-align:left;
+    font-size:.78rem;letter-spacing:.04em;color:var(--ink-faint);
+    padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--sunken);
+    line-height:1.7;
+  }
+  th,td{padding:9px 14px;text-align:left;border-top:1px solid var(--rule-soft);line-height:1.7;vertical-align:top}
+  thead th{
+    border-top:0;font-size:.76rem;letter-spacing:.06em;font-weight:700;
+    color:var(--ink-faint);background:var(--surface);white-space:nowrap;
+  }
+  tbody tr:nth-child(even){background:color-mix(in srgb,var(--sunken) 55%,transparent)}
+  td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hi td{background:var(--ai-soft);font-weight:700}
+  td .up{color:var(--moss);font-weight:700}
+
+  /* ---------- swap (before/after) ---------- */
+  .swap{list-style:none;margin:0 0 1.5em;padding:0;display:flex;flex-direction:column;gap:12px}
+  .swap li{border-top:1px solid var(--rule-soft);padding-top:12px}
+  .swap li:first-child{border-top:0;padding-top:0}
+  .bad,.good{display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:.5rem;align-items:baseline}
+  .bad{color:var(--ink-faint)}
+  .bad::before{content:"✕";color:var(--shu);font-size:.9rem;text-align:center}
+  .bad p,.good p{margin:0;font-size:.95rem;line-height:1.8}
+  .bad p{text-decoration:line-through;text-decoration-color:var(--rule)}
+  .good::before{content:"◎";color:var(--moss);font-size:.9rem;text-align:center}
+  .good p{font-family:var(--serif);font-weight:500}
+  .why{font-size:.8rem;color:var(--ink-faint);margin:.25em 0 0 2.1rem;line-height:1.7}
+
+  /* ---------- post patterns ---------- */
+  .posts{list-style:none;margin:0 0 1.5em;padding:0;display:grid;gap:12px}
+  @media (min-width:720px){.posts{grid-template-columns:1fr 1fr}}
+  .posts li{
+    background:var(--surface);border:1px solid var(--rule);
+    padding:14px 16px 15px;display:flex;flex-direction:column;gap:.5em;border-radius:2px;
+  }
+  .posts .tag{
+    font-size:.72rem;letter-spacing:.08em;font-weight:700;color:var(--ai);
+    display:flex;align-items:center;gap:.5em;
+  }
+  .posts .tag i{
+    font-style:normal;font-family:var(--mono);background:var(--ai-soft);
+    color:var(--ai);padding:1px 6px;border-radius:2px;
+  }
+  .posts .ex{
+    font-family:var(--serif);font-size:.95rem;line-height:1.9;margin:0;
+    padding-left:.8em;border-left:2px solid var(--ai-soft);
+  }
+  .posts .fn{font-size:.8rem;color:var(--ink-faint);margin:0;line-height:1.7}
+
+  /* ---------- timeline ---------- */
+  .weeks{list-style:none;margin:0 0 1.4em;padding:0}
+  .weeks li{
+    display:grid;grid-template-columns:5.6rem minmax(0,1fr);
+    gap:0 1rem;padding:14px 0;border-top:1px dashed var(--rule);
+  }
+  .weeks li:first-child{border-top:0;padding-top:0}
+  .weeks .wk{
+    font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--ai);
+    font-variant-numeric:tabular-nums;padding-top:.15em;
+  }
+  .weeks h4{margin:0 0 .3em;color:var(--ink);font-size:.98rem}
+  .weeks ul{margin:.2em 0 0;padding-left:1.2em}
+  .weeks li li{display:list-item;border:0;padding:0;margin-bottom:.35em;font-size:.92rem}
+
+  /* ---------- stop doing ---------- */
+  .stop{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule)}
+  .stop li{background:var(--surface);padding:12px 15px;font-size:.92rem;line-height:1.8}
+  .stop b{display:block;color:var(--shu);font-size:.88rem;margin-bottom:.1em}
+
+  footer{
+    margin-top:clamp(40px,6vw,64px);padding-top:22px;
+    border-top:1px solid var(--rule);
+    font-size:.82rem;color:var(--ink-faint);line-height:1.9;max-width:62ch;
+  }
+
+  @media (max-width:700px){
+    .sec{grid-template-columns:1fr;gap:0}
+    .rail{padding-top:0;margin-bottom:.7em}
+    .ladder li{grid-template-columns:1fr}
+    .ladder .lv{
+      flex-direction:row;gap:.6em;justify-content:flex-start;
+      border-right:0;border-bottom:1px solid var(--rule);padding:8px 14px;
+    }
+    .lv b{font-size:1rem}
+    .weeks li{grid-template-columns:1fr}
+    .weeks .wk{margin-bottom:.3em}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    a{transition:color .15s ease}
+  }
+  a{color:var(--ai)}
+  :focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">動線設計図 / 2026</div>
+  <h1>1冊で止まったエッセイを、<br>売れる状態に戻す</h1>
+  <p class="standfirst">「人生を変える」系エッセイ／Threads単独集客／有料2〜5本。この条件で1冊売れて止まるのは、文章の質の問題ではありません。<b>抽選券をまだ数十枚しか配っていない</b>だけです。何枚必要で、どこで枚数が漏れているかを全部数字にします。</p>
+  <div class="premise">
+    <span>ジャンル：人生転機エッセイ</span>
+    <span>流入：Threads のみ</span>
+    <span>商品：有料2〜5本</span>
+    <span>実績：累計1冊</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <h2>結論</h2>
+  <p>1. <strong>今の売上は運の範囲内</strong>。有料記事のビューが月100未満なら、期待購入数は月1〜2件。1冊売れて次が来ないのは統計的に普通で、「売れなくなった」のではなく「まだ1回しか抽選していない」状態です。</p>
+  <p>2. だから最初に触るのは記事本文ではなく<strong>Threadsの投稿数と、note内の回遊</strong>。ただし投稿数を3倍にする労力より、<strong>動線3カ所を直すほうが倍率が大きい</strong>（本文 <a href="#s2">02</a> で計算）。</p>
+  <p>3. エッセイは有料note市場で最も売りにくいジャンル。売るなら「読ませる」商品ではなく<strong>「読者が自分に当てはめられる地図」</strong>に変換します。物語は残したまま、構造だけ入れ替えます。</p>
+</div>
+
+<section class="sec" id="s1">
+  <div class="rail">01</div>
+  <div class="col">
+    <h2 class="sh">なぜ「1冊で止まる」のか</h2>
+    <p class="dek">売れない理由は3層ある。下から順に潰さないと、上を直しても効きません。</p>
+
+    <h3>第1層：露出が2桁足りない（99%はこれ）</h3>
+    <p>有料note の購入率は、エッセイ系でおおむね <b>有料記事ビューの1〜3%</b>。仮に2%とすると、1件売るために <b>ビュー50回</b>が必要です。月に1件売れるかどうかのラインが「月間ビュー50」。今この数字が20なら、売れない月があるのは当然で、1冊売れたのはむしろ上振れです。</p>
+    <em class="note">最初にやることは記事を書き直すことではありません。noteダッシュボードで有料記事の「ビュー」を見て、月100を超えているかどうかで診断が分岐します（<a href="#s7">07</a> の切り分け表）。</em>
+
+    <h3>第2層：note に入った人が有料記事まで歩けない</h3>
+    <p>Threadsのプロフィールリンクが「noteのトップページ」か「無料記事のどれか1本」になっている場合、読者はその1本を読んで離脱します。有料記事が2〜5本あっても、<b>その存在に気づかれていない</b>。ここを埋めるのが後述の「ハブ記事」です。</p>
+
+    <h3>第3層：エッセイは「買う理由」が弱い</h3>
+    <p>ノウハウ系は Before→After が明示できるので、価格が「解決の対価」になります。エッセイの対価は「読む体験」で、読者は<b>世の中の無料の文章と比較</b>します。無名の書き手の人生に500円を払う理由は、放っておくと発生しません。</p>
+    <p>エッセイで売れている人は、必ずどちらかをやっています。</p>
+    <ul>
+      <li><b>A：人格への課金</b>──無料エッセイを大量に出し「この人の文章をもっと読みたい」を作る。ファン課金モデル。強いが、立ち上がりに1〜2年かかる。</li>
+      <li><b>B：実用エッセイ化</b>──物語の形のまま、読者が真似できる手順・問い・順番を渡す。買う理由が「読みたい」＋「使える」の2本になる。</li>
+    </ul>
+    <p>Threads単独・フォロワー基盤が小さい段階では <b>Bに寄せる</b>のが現実的です。Aは結果としてBの副産物で付いてきます。</p>
+  </div>
+</section>
+
+<section class="sec" id="s2">
+  <div class="rail">02</div>
+  <div class="col">
+    <h2 class="sh">逆算：月1万円に必要な枚数</h2>
+    <p class="dek">絶対値ではなく倍率を見てください。前提を1つ変えると全体がどう動くかが、意思決定の材料です。</p>
+
+    <p>基準となる前提を置きます（すべて仮定。あなたの実測で置き換えてください）。</p>
+    <ul>
+      <li>Threads 1投稿の平均表示：<b>2,000</b></li>
+      <li>表示 → プロフィールクリック：<b>2%</b></li>
+      <li>プロフィール → リンククリック：<b>15%</b></li>
+      <li>note到達 → 有料記事に辿り着く：<b>40%</b></li>
+      <li>有料記事ビュー → 購入：<b>2%</b> ／ 単価 <b>1,000円</b></li>
+    </ul>
+    <p>この前提だと <b>1投稿 ≒ note 6アクセス</b>。つまり月間のnoteアクセスは、ほぼ投稿数で決まります。</p>
+
+    <div class="scroll">
+      <table>
+        <caption>投稿量だけを変えた場合（前提固定）</caption>
+        <thead>
+          <tr><th>月間投稿数</th><th class="num">noteアクセス</th><th class="num">有料ビュー</th><th class="num">購入</th><th class="num">月商</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>30本（1日1本）</td><td class="num">180</td><td class="num">72</td><td class="num">1.4</td><td class="num">1,400円</td></tr>
+          <tr><td>60本（1日2本）</td><td class="num">360</td><td class="num">144</td><td class="num">2.9</td><td class="num">2,900円</td></tr>
+          <tr><td>90本（1日3本）</td><td class="num">540</td><td class="num">216</td><td class="num">4.3</td><td class="num">4,300円</td></tr>
+          <tr class="hi"><td>90本＋月1回の伸び（5万表示）</td><td class="num">1,090</td><td class="num">436</td><td class="num">8.7</td><td class="num">8,700円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>1日3本を毎日＋月1回伸びて、やっと月8,700円。<b>投稿量だけで押すのはかなりきつい</b>ことがわかります。ここから動線を直します。</p>
+
+    <div class="scroll">
+      <table>
+        <caption>最終行（月商8,700円）を起点に、動線を1つずつ直したときの累積</caption>
+        <thead>
+          <tr><th>打ち手</th><th>動く数字</th><th class="num">倍率</th><th class="num">月商</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ハブ記事を1本作る</td><td>有料到達率 40% → 60%</td><td class="num">×1.5</td><td class="num">13,100円</td></tr>
+          <tr><td>無料／有料ラインを切り直す</td><td>購入率 2% → 3.5%</td><td class="num">×1.75</td><td class="num">22,900円</td></tr>
+          <tr class="hi"><td>価格を3段に階段化</td><td>平均単価 1,000 → 1,400円</td><td class="num">×1.4</td><td class="num">32,100円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>3カ所で <b class="up">約3.7倍</b>。しかもこれは一度直せば以後の全投稿に効きます。<b>投稿を増やす前に、この3つを2週間で終わらせるのが最短</b>です。順番はこのあとの <a href="#s3">03</a>〜<a href="#s5">05</a>。</p>
+    <em class="note">数値の性質について：購入率・クリック率はジャンルと書き手で大きく振れます。この表は「どこを直すと何倍になるか」を示すためのモデルで、8,700円や32,100円という金額を約束するものではありません。1カ月運用して実測値が出たら、前提を差し替えて再計算してください。</em>
+  </div>
+</section>
+
+<section class="sec" id="s3">
+  <div class="rail">03</div>
+  <div class="col">
+    <h2 class="sh">動線の設計図</h2>
+    <p class="dek">層0から層5まで。各層に「役割」「見る数字」「詰まっているサイン」を1つずつ持たせます。役割が重なった層は必ずどちらかが機能しません。</p>
+
+    <ol class="ladder">
+      <li>
+        <div class="lv"><b>0</b><span>THREADS</span></div>
+        <div class="meat">
+          <h4>投稿：見つかる</h4>
+          <p>目的は「いいね」ではなく<b>プロフィールを押させること</b>。1投稿で完結する短編エッセイを置く場所と割り切ります。noteへ送ろうとせず、Threads上で読み切らせて、余韻でプロフィールに来てもらう。</p>
+          <div class="kv"><b>見る数字：プロフィールクリック数</b><b class="warn">詰まりのサイン：表示は出るがプロフィールクリックが1%未満</b></div>
+        </div>
+      </li>
+      <li>
+        <div class="lv"><b>1</b><span>PROFILE</span></div>
+        <div class="meat">
+          <h4>プロフィール：7秒で正体を示す</h4>
+          <p>「誰で、何を変えた人で、誰のために書いているか」。3行で終わらせます。1行目に<b>変化の証明（具体名詞と数字）</b>、2行目に<b>読者の指定</b>、3行目にリンクへの一言。リンク先はnoteトップではなく、次の層のハブ記事1本に固定。</p>
+          <div class="kv"><b>見る数字：リンククリック率</b><b class="warn">詰まりのサイン：自己紹介が趣味と経歴の羅列になっている</b></div>
+        </div>
+      </li>
+      <li>
+        <div class="lv"><b>2</b><span>HUB</span></div>
+        <div class="meat">
+          <h4>ハブ記事（無料）：回遊させる</h4>
+          <p><b>ここが今いちばん欠けている可能性が高い層です。</b>「私が人生を変えるまでにやったこと・全記録（目次）」のような無料記事を1本作り、本文中から有料記事2〜5本すべてへリンクを張る。各リンクには「誰向けか」と「読むと何がわかるか」を1行添える。この記事だけを更新し続け、プロフィールリンクは永久にここへ向けます。</p>
+          <div class="kv"><b>見る数字：ハブ記事ビュー → 有料記事ビューの比率</b><b class="warn">詰まりのサイン：有料記事のビューがハブ記事の30%未満</b></div>
+        </div>
+      </li>
+      <li>
+        <div class="lv"><b>3</b><span>ENTRY</span></div>
+        <div class="meat">
+          <h4>入口の有料（300〜500円）：財布を開かせる</h4>
+          <p>役割は利益ではなく<b>「初回課金の壁を壊すこと」</b>。一度でもあなたに課金した人が2本目を買う確率は、未購入者の比ではありません。5,000〜8,000字で、転機の「最初の一手」だけを書く。短くていい。むしろ短いほうがいい。</p>
+          <div class="kv"><b>見る数字：初回購入者数</b><b class="warn">詰まりのサイン：全商品が同一価格で、読者が選べない</b></div>
+        </div>
+      </li>
+      <li>
+        <div class="lv"><b>4</b><span>MAIN</span></div>
+        <div class="meat">
+          <h4>本命の有料（1,000〜1,500円）：主力</h4>
+          <p>変化の全体像。15,000〜25,000字。時系列の物語＋各章末に「読者が自分に当てはめるための問い」。ここが売上の6割を作ります。既存の有料記事のうち一番自信のある1本を、この位置に置き直して加筆するのが最速。</p>
+          <div class="kv"><b>見る数字：ビュー → 購入率</b><b class="warn">詰まりのサイン：購入率1%未満（＝無料部分かタイトルの問題）</b></div>
+        </div>
+      </li>
+      <li>
+        <div class="lv"><b>5</b><span>DEPTH</span></div>
+        <div class="meat">
+          <h4>深部（2,000〜3,000円）：買った人の行き先</h4>
+          <p>本命を買った人が「もっと」と思ったときの受け皿。手順・テンプレート・使った言葉・時系列の全記録など、<b>物語より資料に寄せた</b>もの。ここがないと、初回購入者がそのまま消えます。最後に作ればよく、最初から用意する必要はありません。</p>
+          <div class="kv"><b>見る数字：リピート購入率</b><b class="warn">詰まりのサイン：記事の末尾に次の1本への案内がない</b></div>
+        </div>
+      </li>
+    </ol>
+
+    <p>層と層のつなぎ目には、必ず<b>1本道</b>を作ります。分岐を置くと読者は止まります。Threadsの投稿末尾に複数リンク、ハブ記事の冒頭に3択、記事末尾に4つの案内──これは全部、離脱を増やす作りです。各層の出口は原則1つ。例外はハブ記事だけで、ハブは分岐させるための層です。</p>
+  </div>
+</section>
+
+<section class="sec" id="s4">
+  <div class="rail">04</div>
+  <div class="col">
+    <h2 class="sh">有料2〜5本を階段に組み替える</h2>
+    <p class="dek">単発が横に並んでいる状態から、縦に積む。在庫は増やさず、値段と順番と末尾だけを変えます。</p>
+
+    <h3>今おそらく起きていること</h3>
+    <ul>
+      <li>2〜5本が<b>ほぼ同価格</b>で、読者にとって「どれを買えばいいか」が判断できない。判断できないものは買われません。</li>
+      <li>記事間に<b>相互リンクがない</b>。1本読んで終わり、2本目の存在を知らないまま去ります。</li>
+      <li>シリーズ名がなく、<b>まとまりとして認識されない</b>。単品の寄せ集めは「体系」に見えません。</li>
+    </ul>
+
+    <h3>やること（1日で終わります）</h3>
+    <ol>
+      <li><b>価格を3段にする。</b>一番短い／入口になる1本を300〜500円へ下げ、一番自信のある1本を1,000〜1,500円に据える。残りはその間か、深部として上に置く。<em class="note">noteの有料記事は価格を後から変更できます。値下げは「安売り」ではなく、入口を作る操作として使ってください。ただし本命の値下げはしない──安いほど売れるわけではなく、エッセイでは「安い＝軽い読み物」に見えて逆効果になります。</em></li>
+      <li><b>全記事の末尾に、次の1本を1つだけ置く。</b>「この話の続き／別角度は、こちらに書きました」＋リンク＋1行説明。入口→本命→深部の順に一方向でつなぐ。</li>
+      <li><b>シリーズ名をつける。</b>各タイトルの頭か末尾に共通の語を入れる（例：「──人生の引き返し方 ①」）。体系に見えると、単価とまとめ買いが上がります。</li>
+      <li><b>マガジンにまとめる。</b>noteのマガジン機能で全有料記事を1つに束ね、ハブ記事とプロフィールから参照できるようにする。</li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="s5">
+  <div class="rail">05</div>
+  <div class="col">
+    <h2 class="sh">無料／有料ラインの引き方</h2>
+    <p class="dek">エッセイの購入率は、ほぼここで決まります。文章力よりも、どこで切るかの問題です。</p>
+
+    <h3>原則：無料部分で「底」を見せ切る</h3>
+    <p>やりがちな失敗は、無料部分が<b>自己紹介と前置きで終わっている</b>こと。読者は感情移入する前に判断を迫られ、離脱します。エッセイで課金が起きるのは、読者が<b>「この人の続きを知らないと気持ちが済まない」</b>状態になったときだけです。</p>
+    <p>だから無料部分には、一番苦しい場面・一番恥ずかしい場面・一番具体的な数字を置きます。惜しんではいけません。無料で出した「底」の深さが、そのまま有料部分の価値になります。</p>
+
+    <h4>切る位置のチェックリスト</h4>
+    <ul>
+      <li>無料部分は全体の<b>30〜40%</b>、かつ最低<b>3,000字</b>は読ませる。</li>
+      <li>無料の最後の1行は、<b>読者が次の展開を知りたくなる1文</b>で終える。「そこから、何が起きたか。」「この日、私は一つだけ決めた。」など。説明で終わらせない。</li>
+      <li>有料部分の<b>冒頭に「この先に書くこと」を5行の箇条書き</b>で置く。購入直後の満足度と、返金リクエストの体感が変わります。</li>
+      <li>無料部分に<b>結論を書かない</b>。ただし「結論があること」は示す。</li>
+    </ul>
+
+    <h3>タイトル：「私の話」から「あなたが使える話」へ</h3>
+    <p>エッセイのタイトルが売れないのは、主語が書き手のままだからです。物語は一人称でよいが、タイトルだけは読者の側に寄せます。</p>
+    <ul class="swap">
+      <li>
+        <div class="bad"><p>私が会社を辞めた日</p></div>
+        <div class="good"><p>会社を辞める前夜、私が紙に書いた12の質問</p></div>
+        <p class="why">具体数字＋読者が真似できる行動。物語性は落ちていない。</p>
+      </li>
+      <li>
+        <div class="bad"><p>人生を変える方法</p></div>
+        <div class="good"><p>人生が変わったのは決意した日ではなく、その3か月後だった</p></div>
+        <p class="why">常識の反転。「では何が起きたのか」が知りたくなる。</p>
+      </li>
+      <li>
+        <div class="bad"><p>30代からの生き方について</p></div>
+        <div class="good"><p>30歳の誕生日に「やめたことリスト」を作ったら、1年で全部変わった</p></div>
+        <p class="why">時点指定＋Before/After。エッセイのまま実用の匂いが出る。</p>
+      </li>
+      <li>
+        <div class="bad"><p>変わりたいのに変われないあなたへ</p></div>
+        <div class="good"><p>「変わりたいのに動けない」の正体は、やる気ではなかった</p></div>
+        <p class="why">読者の内心の代弁＋否定。自分のことだと思った人だけが開く。</p>
+      </li>
+    </ul>
+    <em class="note">見出し画像も購入率に効きます。文字を大きく1行だけ入れた画像（タイトルの一番刺さる部分だけ）が、写真だけより強い傾向があります。noteの「みんなのフォトギャラリー」の既製画像は他の記事と被るので、シリーズ共通のフォーマットを1つ作って全記事で使い回すほうが、体系に見えます。</em>
+  </div>
+</section>
+
+<section class="sec" id="s6">
+  <div class="rail">06</div>
+  <div class="col">
+    <h2 class="sh">Threads の運用</h2>
+    <p class="dek">Threadsはテキスト主体で共感駆動。転機エッセイとの相性は、主要SNSの中でおそらく最も良い。その代わり、使い方がXとは違います。</p>
+
+    <h3>3つのルール</h3>
+    <ol>
+      <li><b>投稿本文にリンクを貼らない。</b>外部リンク付き投稿は伸びが鈍る傾向があります。反応が出た投稿にだけ、自分でリプライを足して「詳しく書いた記事はプロフィールから」と誘導する。<em class="note">アルゴリズムの挙動は公式に公表されておらず、時期によって変わります。断定せず、2週間ずつ検証してください。まずは「リンクなし」を基本形に。</em></li>
+      <li><b>誘導は10投稿に1回。</b>残り9本は完全に価値提供（＝無料エッセイ）。比率が崩れると、伸びる前に「売りたい人」として認識されます。</li>
+      <li><b>リプライを取りにいく。</b>返信数が伸びの主因になりやすいので、投稿の最後を問いで閉じ、ついたリプライには全部返す。返信欄で会話が続いた投稿がいちばん遠くまで届きます。</li>
+    </ol>
+
+    <h3>投稿の型（人生転機エッセイ用・5種）</h3>
+    <p>毎日この5つを回します。150〜300字。1投稿で読み切れること。</p>
+    <ul class="posts">
+      <li>
+        <div class="tag"><i>01</i>シーン切り出し</div>
+        <p class="ex">「そのままでいいんじゃない?」と言われた夜、私は初めて泣けなかった。</p>
+        <p class="fn">会話文から始める。説明を前に置かない。状況は読者が勝手に埋めます。</p>
+      </li>
+      <li>
+        <div class="tag"><i>02</i>数字の告白</div>
+        <p class="ex">貯金2万円、28歳、資格ゼロ。ここから変わった最初の一手は、転職でも副業でもなかった。</p>
+        <p class="fn">具体数字は信頼と続きへの引きを同時に作る。答えは書かない。</p>
+      </li>
+      <li>
+        <div class="tag"><i>03</i>常識の反転</div>
+        <p class="ex">「やりたいことを見つけろ」は順番が逆だと思う。見つかるのは、動いたあとだから。</p>
+        <p class="fn">保存されやすく、賛否のリプライが付く。炎上狙いではなく、自分の実感の範囲で。</p>
+      </li>
+      <li>
+        <div class="tag"><i>04</i>失敗の解剖</div>
+        <p class="ex">人生を変えようとして最初にやった3つは、全部むだだった。順番に書きます。</p>
+        <p class="fn">成功談より伸びる。連投（スレッド）で3つを展開すると滞在が伸びる。</p>
+      </li>
+      <li>
+        <div class="tag"><i>05</i>問い</div>
+        <p class="ex">あなたが「もう戻れない」と思った瞬間は、いつでしたか。</p>
+        <p class="fn">リプライ稼ぎの専用枠。1日1本は必ず入れる。返信は全部返す。</p>
+      </li>
+    </ul>
+
+    <h3>伸びた投稿の使い道</h3>
+    <p>ここが Threads を「集客」以上に使う部分です。<b>伸びた投稿のテーマが、次に書くべき有料記事のテーマ</b>です。何が売れるかは市場が教えてくれるので、想像で企画しない。</p>
+    <ul>
+      <li>保存・リプライが多かった投稿を、月末に3つ選ぶ。</li>
+      <li>その1つを2,000字の無料note、または本命記事の1章に拡張する。</li>
+      <li>拡張した記事をハブ記事に追加する。ハブが太るほど層2の通過率が上がります。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="s7">
+  <div class="rail">07</div>
+  <div class="col">
+    <h2 class="sh">週1回5分の計測と切り分け</h2>
+    <p class="dek">見る数字は4つだけ。多く見ると手が止まります。日曜の夜に5分。</p>
+    <ul>
+      <li>Threads：<b>週の投稿数</b>と、伸びた投稿トップ3</li>
+      <li>note ダッシュボード：<b>週のビュー合計</b></li>
+      <li>note：<b>有料記事ごとのビュー</b></li>
+      <li>note：<b>購入件数</b></li>
+    </ul>
+    <p>そして、この表のどの行にいるかを判定します。行が変わると、直す場所が変わります。<b>行を間違えて直すのが、いちばんの時間の浪費です。</b></p>
+
+    <div class="scroll">
+      <table>
+        <caption>症状 → 原因 → 直す場所</caption>
+        <thead>
+          <tr><th>症状</th><th>原因</th><th>直す場所</th><th>やってはいけないこと</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>有料記事のビューが月100未満</td><td>集客不足。記事の問題ではない</td><td>層0：Threadsの投稿数を増やす</td><td>記事を書き直す・値下げする</td>
+          </tr>
+          <tr>
+            <td>note全体のビューはあるが、有料記事のビューが少ない</td><td>回遊できていない</td><td>層2：ハブ記事を作る／リンクを張り直す</td><td>新しい有料記事を書き足す</td>
+          </tr>
+          <tr>
+            <td>有料記事のビューが月100超、購入率1%未満</td><td>無料部分の切り位置かタイトル</td><td>層4・05章：無料ラインを深くし直す</td><td>集客をさらに増やす</td>
+          </tr>
+          <tr>
+            <td>Threadsは伸びるがnoteに来ない</td><td>プロフィールが機能していない</td><td>層1：3行に書き直す／リンク先を1本に固定</td><td>投稿本文にリンクを貼る</td>
+          </tr>
+          <tr>
+            <td>1本は売れるが2本目が売れない</td><td>階段と末尾導線がない</td><td>層3・5：価格を3段化、記事末尾に次の1本</td><td>全部を同じ価格で並べ続ける</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <em class="note">判定は月単位で。週単位の増減は誤差です。エッセイで購入が週0件の週があるのは正常で、そこで方針を変えるのが最も損をします。変えるのは月の終わりだけ。</em>
+  </div>
+</section>
+
+<section class="sec" id="s8">
+  <div class="rail">08</div>
+  <div class="col">
+    <h2 class="sh">90日の順番</h2>
+    <p class="dek">最初の2週間は投稿を増やしません。倍率の大きいところから触ります。</p>
+
+    <ul class="weeks">
+      <li>
+        <div class="wk">Week 1–2</div>
+        <div>
+          <h4>土台：投稿より先に、漏れを止める</h4>
+          <ul>
+            <li>プロフィールを3行に書き直す（変化の証明／読者指定／リンク一言）</li>
+            <li>ハブ記事を1本書く。有料2〜5本すべてへのリンクと1行説明を入れる</li>
+            <li>プロフィールリンクをハブ記事に固定する</li>
+            <li>価格を3段に変更。入口1本を300〜500円へ</li>
+            <li>全有料記事の末尾に「次の1本」を1つだけ追加</li>
+            <li>本命1本の無料／有料ラインを切り直す（底を無料へ、切り位置を1文で）</li>
+            <li>本命1本のタイトルを、05章の4型のどれかで書き直す</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="wk">Week 3–6</div>
+        <div>
+          <h4>量：型を回して、伸びる型を特定する</h4>
+          <ul>
+            <li>Threads 1日2本を毎日。5つの型を順番に回す</li>
+            <li>1日1本は「問い」型を必ず入れ、リプライには全部返す</li>
+            <li>誘導リプライは10投稿に1回だけ</li>
+            <li>週末に、伸びた投稿トップ3の型を記録する</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="wk">Week 7–10</div>
+        <div>
+          <h4>転用：市場が選んだテーマを商品にする</h4>
+          <ul>
+            <li>伸びた型の比率を上げ、伸びない型は捨てる</li>
+            <li>伸びた投稿3つを、無料note または本命記事の新章へ拡張</li>
+            <li>拡張した記事をハブ記事に追加（ハブは育て続ける唯一の記事）</li>
+            <li>投稿を1日3本に（可能なら）</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="wk">Week 11–13</div>
+        <div>
+          <h4>回収：買った人の行き先を作る</h4>
+          <ul>
+            <li>深部の1本（2,000〜3,000円／手順・資料寄り）を書く</li>
+            <li>マガジンで全有料記事を束ね、ハブとプロフィールから参照させる</li>
+            <li>3か月の実測値（プロフィールクリック率・購入率）で <a href="#s2">02</a> の前提を差し替え、再計算する</li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="s9">
+  <div class="rail">09</div>
+  <div class="col">
+    <h2 class="sh">やらないこと</h2>
+    <p class="dek">この段階で時間を溶かす典型。どれも「やっている感」があるのが厄介です。</p>
+    <ul class="stop">
+      <li><b>無料noteの量産</b>無料記事を増やしても購入率は上がりません。増やすのはThreadsの投稿で、noteは「ハブ1本＋有料の階段」に集中させる。</li>
+      <li><b>本命の値下げ</b>エッセイでは安いほど「軽い読み物」に見え、購入理由が弱まります。下げるのは入口1本だけ。</li>
+      <li><b>相互スキ・相互フォロー</b>ビューは増えますが、買う気のない読者が増えるだけで購入率の分母が汚れ、判定ができなくなります。</li>
+      <li><b>SNSの同時多展開</b>Threadsが効くジャンルなので、まず1つを3か月やり切る。分散させると、どのチャネルも判定可能な母数に届きません。</li>
+      <li><b>週単位での方針変更</b>購入は週0件がありえます。変えるのは月末だけ、<a href="#s7">07</a> の表で行を確認してから。</li>
+      <li><b>完璧な新作を1本書く</b>今ある2〜5本を階段に組み替えるほうが、倍率も速度も上です。新作は Week 11 以降。</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>この設計図の数値は、あなたの実測値を入れて置き換える前提のモデルです。最初に測るべきは「有料記事の月間ビュー」ひとつ。それが100を超えるまでは、記事ではなく層0と層2だけを触ってください。</p>
+</footer>
+
+</div>
