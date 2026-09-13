@@ -1,0 +1,622 @@
+<title>知ってくれる人のつくり方</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#f5f6f9;
+    --surface:#ffffff;
+    --sunken:#ecedf4;
+    --ink:#141a29;
+    --ink-soft:#4e566b;
+    --ink-faint:#7b8298;
+    --rule:#d9dce6;
+    --rule-soft:#e8eaf1;
+    --shu:#a93c29;
+    --shu-soft:#f7eae6;
+    --ai:#2b4a7d;
+    --ai-soft:#e5ecf7;
+    --moss:#3a6550;
+    --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",'ヒラギノ明朝 ProN',serif;
+    --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0f1220; --surface:#171c2b; --sunken:#1e2435;
+      --ink:#e9ebf3; --ink-soft:#a9afc3; --ink-faint:#7c8399;
+      --rule:#2c3345; --rule-soft:#232939;
+      --shu:#e4907c; --shu-soft:#33211d;
+      --ai:#93b6e8; --ai-soft:#1b2740;
+      --moss:#8dc0a3;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1220; --surface:#171c2b; --sunken:#1e2435;
+    --ink:#e9ebf3; --ink-soft:#a9afc3; --ink-faint:#7c8399;
+    --rule:#2c3345; --rule-soft:#232939;
+    --shu:#e4907c; --shu-soft:#33211d;
+    --ai:#93b6e8; --ai-soft:#1b2740;
+    --moss:#8dc0a3;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding-inline:clamp(18px,4vw,40px);padding-block:0 96px}
+  a{color:var(--shu)}
+  :focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+
+  /* ---- masthead ---- */
+  .mast{
+    padding-block:clamp(40px,7vw,76px) clamp(28px,4vw,40px);
+    border-bottom:1px solid var(--rule);
+    display:grid; grid-template-columns:1fr; gap:22px;
+  }
+  .vlabel{display:none}
+  @media (min-width:860px){
+    .mast{grid-template-columns:2.4rem minmax(0,1fr);gap:0 1.8rem;align-items:start}
+    .mast > *:not(.vlabel){grid-column:2}
+    .mast{row-gap:22px}
+    .vlabel{
+      display:block; grid-column:1; grid-row:1 / span 4;
+      writing-mode:vertical-rl; font-family:var(--serif); font-weight:700;
+      font-size:.86rem; letter-spacing:.4em; color:var(--shu);
+      border-left:1px solid var(--rule); padding-left:.7em; margin-top:.5em;
+      height:11em;
+    }
+  }
+  .kicker{
+    font-family:var(--mono); font-size:.74rem; letter-spacing:.14em;
+    color:var(--ink-faint); display:flex; align-items:center; gap:.8em; flex-wrap:wrap;
+  }
+  .kicker b{color:var(--shu);font-weight:700;letter-spacing:.1em}
+  h1{
+    font-family:var(--serif); font-weight:700;
+    font-size:clamp(1.85rem,5vw,2.6rem); line-height:1.45; letter-spacing:.01em;
+    margin:0; text-wrap:balance; max-width:22ch;
+  }
+  .standfirst{
+    font-family:var(--serif); font-size:clamp(1rem,2.3vw,1.1rem); line-height:2.05;
+    color:var(--ink-soft); max-width:54ch; margin:0;
+  }
+  .standfirst b{color:var(--ink);border-bottom:2px solid var(--shu-soft)}
+
+  /* ---- verdict ---- */
+  .verdict{
+    margin-block:clamp(32px,5vw,48px);
+    border:1px solid var(--rule); border-top:3px solid var(--shu);
+    background:var(--surface); padding:clamp(20px,3.5vw,30px) clamp(18px,3.5vw,32px);
+  }
+  .verdict h2{
+    font-size:.78rem; letter-spacing:.16em; font-weight:700;
+    color:var(--shu); margin:0 0 1em;
+  }
+  .verdict ol{margin:0;padding-left:1.4em;max-width:60ch}
+  .verdict li{margin-bottom:.9em}
+  .verdict li:last-child{margin-bottom:0}
+  .verdict li::marker{font-family:var(--mono);color:var(--shu);font-weight:700}
+  .verdict strong{font-weight:700;background:linear-gradient(transparent 62%,var(--shu-soft) 62%)}
+
+  /* ---- sections ---- */
+  .sec{
+    display:grid; grid-template-columns:3.6rem minmax(0,1fr); gap:0 1.8rem;
+    padding-block:clamp(34px,5vw,54px); border-top:1px solid var(--rule-soft);
+  }
+  .rail{
+    font-family:var(--mono); font-size:.78rem; font-weight:600;
+    color:var(--ink-faint); letter-spacing:.06em; padding-top:.55em;
+    font-variant-numeric:tabular-nums;
+  }
+  .col{min-width:0}
+  h2.sh{
+    font-family:var(--serif); font-size:clamp(1.3rem,3.3vw,1.65rem); font-weight:700;
+    line-height:1.55; margin:0 0 .2em; text-wrap:balance;
+  }
+  .dek{color:var(--ink-faint);font-size:.92rem;margin:0 0 1.6em;max-width:58ch}
+  h3{
+    font-size:1.02rem; font-weight:700; line-height:1.7; margin:2.2em 0 .6em;
+    padding-bottom:.4em; border-bottom:1px solid var(--rule-soft);
+  }
+  h3:first-child{margin-top:0}
+  h4{font-size:.95rem;font-weight:700;margin:1.7em 0 .3em;color:var(--shu)}
+  .col p{margin:0 0 1.1em;max-width:62ch}
+  .col ul,.col ol{margin:0 0 1.3em;padding-left:1.3em;max-width:62ch}
+  .col li{margin-bottom:.5em}
+  .col li::marker{color:var(--ink-faint)}
+  em.note{
+    display:block; font-style:normal; font-size:.83rem; line-height:1.85;
+    color:var(--ink-faint); border-left:2px solid var(--rule);
+    padding-left:.9em; margin:1.3em 0; max-width:60ch;
+  }
+  .pull{
+    font-family:var(--serif); font-size:clamp(1.05rem,2.6vw,1.25rem);
+    line-height:1.85; font-weight:500; color:var(--ink);
+    margin:1.6em 0; padding:0 0 0 1em; border-left:3px solid var(--shu);
+    max-width:44ch;
+  }
+
+  /* ---- flag builder ---- */
+  .flag{
+    background:var(--surface); border:1px solid var(--rule);
+    padding:16px 18px; margin:0 0 1.4em; display:grid; gap:10px;
+  }
+  .flag .row{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:.9rem;align-items:baseline}
+  .flag .t{font-size:.76rem;font-weight:700;color:var(--shu);letter-spacing:.04em;line-height:1.9}
+  .flag p{margin:0;font-size:.94rem;line-height:1.85}
+  .flag .ex{font-family:var(--serif);color:var(--ink-soft)}
+
+  /* ---- hooks ---- */
+  .hooks{list-style:none;margin:0 0 1.5em;padding:0;display:grid;gap:10px}
+  @media (min-width:700px){.hooks{grid-template-columns:1fr 1fr}}
+  .hooks li{
+    background:var(--surface);border:1px solid var(--rule);padding:14px 16px 15px;
+    display:flex;flex-direction:column;gap:.4em;
+  }
+  .hooks .n{
+    font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--shu);
+    letter-spacing:.08em;
+  }
+  .hooks h4{margin:0;color:var(--ink);font-size:.98rem}
+  .hooks p{margin:0;font-size:.9rem;line-height:1.8}
+  .hooks .ex{
+    font-family:var(--serif);font-size:.88rem;color:var(--ink-soft);
+    padding-left:.7em;border-left:2px solid var(--shu-soft);line-height:1.8;
+  }
+
+  /* ---- disclosure steps ---- */
+  .steps{list-style:none;margin:0 0 1.5em;padding:0;counter-reset:s}
+  .steps li{
+    display:grid;grid-template-columns:2.1rem minmax(0,1fr);gap:.9rem;
+    padding:13px 0;border-top:1px solid var(--rule-soft);
+  }
+  .steps li:first-child{border-top:0;padding-top:0}
+  .steps li::before{
+    counter-increment:s;content:counter(s);
+    font-family:var(--mono);font-size:.8rem;font-weight:700;
+    width:1.9rem;height:1.9rem;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--sunken);color:var(--ink-faint);
+  }
+  .steps li.key::before{background:var(--shu);color:#fff}
+  :root[data-theme="dark"] .steps li.key::before{color:#171c2b}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .steps li.key::before{color:#171c2b}}
+  .steps h4{margin:0 0 .15em;color:var(--ink);font-size:.97rem}
+  .steps p{margin:0;font-size:.91rem;line-height:1.8;max-width:56ch}
+  .steps .ex{font-family:var(--serif);color:var(--ink-soft);margin-top:.3em}
+
+  /* ---- 20 angles ---- */
+  .angles{
+    list-style:none;margin:0 0 1.4em;padding:0;
+    display:grid;gap:1px;background:var(--rule);
+    border:1px solid var(--rule);
+  }
+  @media (min-width:620px){.angles{grid-template-columns:1fr 1fr}}
+  .angles li{
+    background:var(--surface);padding:9px 13px;font-size:.89rem;line-height:1.75;
+    display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:.4rem;
+  }
+  .angles li b{
+    font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;font-weight:600;
+  }
+
+  /* ---- reply craft ---- */
+  .craft{margin:0 0 1.5em;border:1px solid var(--rule);background:var(--surface)}
+  .craft > div{padding:13px 16px;border-top:1px solid var(--rule-soft)}
+  .craft > div:first-child{border-top:0}
+  .craft .lv{
+    font-size:.74rem;letter-spacing:.08em;font-weight:700;
+    color:var(--ink-faint);margin-bottom:.3em;
+  }
+  .craft .bad{color:var(--ink-faint);font-size:.92rem;margin:0 0 .3em}
+  .craft .bad s{text-decoration-color:var(--shu)}
+  .craft .good{font-family:var(--serif);font-size:.96rem;margin:0;line-height:1.85}
+  .craft .good::before{content:"◎ ";color:var(--moss)}
+  .craft .bad::before{content:"✕ ";color:var(--shu);text-decoration:none;display:inline}
+
+  /* ---- tables ---- */
+  .scroll{overflow-x:auto;margin:0 0 1.4em;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:500px;font-size:.88rem}
+  caption{
+    caption-side:top;text-align:left;font-size:.78rem;letter-spacing:.04em;
+    color:var(--ink-faint);padding:10px 14px;border-bottom:1px solid var(--rule);
+    background:var(--sunken);line-height:1.7;
+  }
+  th,td{padding:9px 14px;text-align:left;border-top:1px solid var(--rule-soft);line-height:1.7;vertical-align:top}
+  thead th{border-top:0;font-size:.76rem;letter-spacing:.06em;font-weight:700;color:var(--ink-faint);white-space:nowrap}
+  tbody tr:nth-child(even){background:color-mix(in srgb,var(--sunken) 55%,transparent)}
+  td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hi td{background:var(--shu-soft);font-weight:700}
+
+  /* ---- stage ladder ---- */
+  .stages{list-style:none;margin:0 0 1.4em;padding:0;display:flex;flex-direction:column;gap:10px}
+  .stages li{
+    display:grid;grid-template-columns:6.2rem minmax(0,1fr);
+    background:var(--surface);border:1px solid var(--rule);overflow:hidden;
+  }
+  .stages .nm{
+    background:var(--sunken);border-right:1px solid var(--rule);
+    padding:14px 10px;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:2px;text-align:center;
+  }
+  .stages .nm b{font-family:var(--serif);font-size:1.05rem;color:var(--shu);line-height:1.4}
+  .stages .nm span{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--ink-faint)}
+  .stages .meat{padding:14px 17px 15px}
+  .stages .meat p{margin:0 0 .55em;font-size:.92rem;line-height:1.85;max-width:56ch}
+  .stages .meat p:last-child{margin-bottom:0}
+  .sig{font-size:.84rem;color:var(--ink-soft);line-height:1.8}
+  .sig b{color:var(--shu);font-weight:700}
+
+  /* ---- week ---- */
+  .week{list-style:none;margin:0 0 1.4em;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .week li{background:var(--surface);padding:11px 15px;display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:.8rem;font-size:.92rem;line-height:1.8}
+  .week li b{font-family:var(--mono);font-size:.78rem;color:var(--shu);font-weight:700;padding-top:.15em}
+
+  /* ---- stop ---- */
+  .stop{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .stop li{background:var(--surface);padding:12px 15px;font-size:.92rem;line-height:1.8}
+  .stop li b{display:block;color:var(--shu);font-size:.88rem;margin-bottom:.1em}
+
+  footer{
+    margin-top:clamp(40px,6vw,64px);padding-top:22px;border-top:1px solid var(--rule);
+    font-size:.83rem;color:var(--ink-faint);line-height:1.9;max-width:62ch;
+  }
+  footer p{margin:0 0 .8em}
+
+  @media (max-width:700px){
+    .sec{grid-template-columns:1fr;gap:0}
+    .rail{padding-top:0;margin-bottom:.7em}
+    .stages li{grid-template-columns:1fr}
+    .stages .nm{flex-direction:row;justify-content:flex-start;gap:.6em;border-right:0;border-bottom:1px solid var(--rule);padding:8px 14px}
+    .week li{grid-template-columns:1fr;gap:.1rem}
+    .flag .row{grid-template-columns:1fr;gap:.1rem}
+  }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="vlabel">認知のつくりかた</div>
+  <div class="kicker"><b>別冊 02</b><span>動線設計図の「層0」の中身</span></div>
+  <h1>知ってくれる人を、<br>1人ずつ増やす</h1>
+  <p class="standfirst">note で最後に効くのは、記事の完成度ではなく「あなたを思い出せる人が何人いるか」です。そしてこれは<b>フォロワー数とはほとんど別の数字</b>です。増やし方には手順があります。</p>
+</header>
+
+<div class="verdict">
+  <h2>いちばん大事なこと</h2>
+  <ol>
+    <li><strong>「知っている」の正体は、思い出せること。</strong>あなたの名前を見て「ああ、◯◯を書く人だ」と1秒で出てくる人だけが、あなたを知っている人です。接触回数では作れません。<b>記憶のフック</b>が必要です。</li>
+    <li><strong>エッセイ書き手が覚えられない最大の理由は、毎回ちがう話を書いているから。</strong>転機エッセイは題材が豊富で、いくらでも別の話が書けます。それが最大の罠です。<a href="#s2">旗を1本</a>立てて、そこから動かないこと。</li>
+    <li><strong>購入率は、露出経由の2%に対して、関係経由は10〜20%。</strong>10倍ちがいます。フォロワーを増やす作業と、知ってくれる人を増やす作業は、別の作業です。<a href="#s6">後者は1日30分</a>で回せます。</li>
+  </ol>
+</div>
+
+<section class="sec" id="s1">
+  <div class="rail">01</div>
+  <div class="col">
+    <h2 class="sh">「知ってくれている人」とは誰か</h2>
+    <p class="dek">定義をはっきりさせないと、増やしようがありません。数字で押さえます。</p>
+
+    <p>フォロワー1,000人のアカウントで、投稿に毎回反応する人はだいたい20〜50人。名前を覚えている人はもっと少なく、<b>30人前後</b>です。残りの950人は、タイムラインで一度すれ違っただけの人で、あなたの名前を出しても思い出せません。これは失敗ではなく、SNSの標準的な構造です。</p>
+
+    <p class="pull">フォロワーは「通り過ぎた人の数」。知ってくれている人は「思い出せる人の数」。増やすべきは後者です。</p>
+
+    <p>逆側から見ると希望があります。あなたが<b>リプライで往復の会話をした相手</b>は、ほぼ全員があなたを覚えています。転換率がまるで違うのです。</p>
+
+    <div class="scroll">
+      <table>
+        <caption>接触の種類ごとの「覚えてもらえる率」（実務上の目安）</caption>
+        <thead>
+          <tr><th>接触のかたち</th><th class="num">覚えられる率</th><th>1か月にできる件数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>投稿がタイムラインに表示される</td><td class="num">0.1%未満</td><td>数万〜</td></tr>
+          <tr><td>投稿にいいねがつく</td><td class="num">1〜2%</td><td>数百</td></tr>
+          <tr><td>リプライをもらう／返す（1往復）</td><td class="num">30〜50%</td><td>100〜150</td></tr>
+          <tr class="hi"><td>同じ相手と3回以上やりとりする</td><td class="num">80%以上</td><td>20〜40</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>1か月に「3回以上やりとりした人」を20人つくれば、1年で200人強。そのうち有料記事を買う人が1〜2割なら、<b>関係経由だけで月20〜40件の購入母数</b>が積み上がります。前回の設計図の露出モデル（購入率2%）とは別ルートで、こちらは減りません。</p>
+    <em class="note">この数値は業界統計ではなく、SNS運用の現場で使われる経験的な目安です。絶対値は信用せず、「露出より会話のほうが桁で効く」という大小関係だけを使ってください。</em>
+  </div>
+</section>
+
+<section class="sec" id="s2">
+  <div class="rail">02</div>
+  <div class="col">
+    <h2 class="sh">旗を1本立てる</h2>
+    <p class="dek">覚えられる書き手は、全部の投稿が同じ1つの問いの変奏になっています。テーマではなく、問いです。</p>
+
+    <h3>テーマと問いのちがい</h3>
+    <p>「人生を変える」はテーマです。テーマは広すぎて、読者の頭に引っかかりません。必要なのは<b>あなたが繰り返し問い続けている1つの問い</b>で、しかもそれは答えが出ていないほうがいい。答えの出た話は1回で終わりますが、答えの出ていない問いは何十回でも書けます。</p>
+
+    <div class="flag">
+      <div class="row"><div class="t">テーマ</div><p class="ex">人生を変える／自分らしく生きる</p></div>
+      <div class="row"><div class="t">問い</div><p class="ex">人はどの瞬間に「引き返せなくなる」のか</p></div>
+      <div class="row"><div class="t">問い</div><p class="ex">変わりたいのに動けないとき、本当に足りないものは何なのか</p></div>
+      <div class="row"><div class="t">問い</div><p class="ex">やめることを決めた人と、決められない人は何がちがうのか</p></div>
+    </div>
+
+    <h4>旗の作り方（30分）</h4>
+    <ol>
+      <li>自分の転機を1つ選び、その出来事を1行で書く。</li>
+      <li>その出来事について、<b>今でも答えが出ていないこと</b>を3つ書く。</li>
+      <li>3つのうち、他人にも当てはまるものを1つ選ぶ。それが旗です。</li>
+      <li>旗を「〜のか」の疑問形にして、紙に書いて見えるところに貼る。</li>
+    </ol>
+    <p>以後、投稿・記事・プロフィールのすべてを<b>この問いの変奏</b>にします。別の面白い話を思いついても、旗に接続できないなら書かない。ここを我慢できるかどうかが分かれ目です。</p>
+
+    <p class="pull">「またこの話か」と自分が思い始めたときに、ようやく読者に届き始めています。書き手は飽きますが、読者はいつも初見です。</p>
+  </div>
+</section>
+
+<section class="sec" id="s3">
+  <div class="rail">03</div>
+  <div class="col">
+    <h2 class="sh">記憶のフック4点セット</h2>
+    <p class="dek">旗が中身なら、これは取っ手です。4つとも揃えて、1年間変えないこと。変えるたびに記憶がリセットされます。</p>
+
+    <ul class="hooks">
+      <li>
+        <div class="n">HOOK 01</div>
+        <h4>名前の後ろにつく一句</h4>
+        <p>名前だけでは覚えられません。「◯◯（〜の人）」という短い定型を、名前欄に直接入れる。肩書きではなく、状態の説明にする。</p>
+        <p class="ex">例：「30代で全部やめた人」／「引き返し方を書く人」</p>
+      </li>
+      <li>
+        <div class="n">HOOK 02</div>
+        <h4>自分語彙を3つ作る</h4>
+        <p>自分だけが使う言い回し。他人の文章に出てこない語を、毎回同じ形で繰り返す。読者はこの語であなたを識別します。</p>
+        <p class="ex">例：「引き返し方」「あの夜の3行」「やめたことリスト」</p>
+      </li>
+      <li>
+        <div class="n">HOOK 03</div>
+        <h4>見た目の一貫性</h4>
+        <p>アイコンは1年変えない。note の見出し画像は、同じ書式（同じ背景・同じ文字位置）を全記事で使い回す。既製の素材集は他の記事と被るので避ける。</p>
+        <p class="ex">効果：一覧に並んだとき、あなたの記事だけが「並び」に見える</p>
+      </li>
+      <li>
+        <div class="n">HOOK 04</div>
+        <h4>締めの1行を固定する</h4>
+        <p>投稿の最後を毎回同じ形で閉じる。署名のように機能し、途中から読んだ人にも書き手が伝わります。</p>
+        <p class="ex">例：毎回、読者への問いで終える／毎回「──ここまで。」で閉じる</p>
+      </li>
+    </ul>
+
+    <em class="note">4つのうち、いちばん効くのは <b>HOOK 02（自分語彙）</b>です。有料記事のタイトルにもこの語を入れると、Threads で見た語と note で見る語が一致して、「この人だ」が成立します。前回の設計図でシリーズ名を付けたのは、この効果を狙っています。</em>
+  </div>
+</section>
+
+<section class="sec" id="s4">
+  <div class="rail">04</div>
+  <div class="col">
+    <h2 class="sh">覚えられる文章の条件は2つだけ</h2>
+    <p class="dek">固有名詞と、開示の深さ。この2つが揃った文章だけが記憶に残ります。</p>
+
+    <h3>1. 固有名詞を1つ入れる</h3>
+    <p>「駅」ではなく「京王線の各駅停車」。「安い定食屋」ではなく「390円の唐揚げ定食」。「上司」ではなく「入社2年目の私より3つ下だった上司」。抽象名詞は読み飛ばされ、固有名詞は映像になります。<b>映像になったものだけが記憶されます。</b></p>
+    <p>投稿150〜300字のなかに、固有名詞か具体数字を<b>最低1つ、多くて3つ</b>。多すぎると情報になり、感情が消えます。</p>
+
+    <h3>2. 開示は4段階ある。3段目まで行く</h3>
+    <p>自己開示には順番があり、途中で止まると「成功者の回想」になって、読者は自分と切り離します。</p>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <h4>起きたこと（事実）</h4>
+          <p>失敗・挫折・別れの事実。ここは誰でも書けます。ここまでで止まっている文章が、いちばん多い。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>その時の感情</h4>
+          <p>恥ずかしさ、怒り、何も感じなかったこと。「つらかった」ではなく、その時の体の反応まで書く。</p>
+        </div>
+      </li>
+      <li class="key">
+        <div>
+          <h4>今でも残っている傷</h4>
+          <p><b>ここを書ける人だけが記憶されます。</b>治っていないこと、今もできないこと、いまだに避けている場所。読者が「この人は今も途中にいる」と分かった瞬間に、距離が消えます。</p>
+          <p class="ex">例：あれから7年たつが、あの駅の改札はいまでも遠回りして避けている。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>それでも選んだこと</h4>
+          <p>3段目と必ずセットにする。3で終わると重いだけの文章になり、読者は逃げます。4があって初めて、読者は自分の話として読みます。</p>
+        </div>
+      </li>
+    </ol>
+
+    <em class="note">開示は在庫です。使えば減ります。1投稿につき3段目は<b>1つだけ</b>。全部いっぺんに出すと、次の投稿で出すものがなくなり、話を盛るしかなくなります。盛った瞬間に、読者は気づきます。</em>
+  </div>
+</section>
+
+<section class="sec" id="s5">
+  <div class="rail">05</div>
+  <div class="col">
+    <h2 class="sh">同じ転機を20回書く</h2>
+    <p class="dek">ネタ切れは、題材が足りないのではなく角度が足りない状態です。1つの転機から20本出ます。</p>
+
+    <p>旗を立てたら、投稿のネタは「新しい出来事」から探しません。<b>同じ1つの転機を、20の角度から書き直します。</b>読者は毎回ちがう話として読み、しかも回を重ねるごとに、同じ1つの旗が頭に刻まれます。</p>
+
+    <ul class="angles">
+      <li><b>01</b>その日の天気と、いた場所</li>
+      <li><b>02</b>言われた一言</li>
+      <li><b>03</b>言えなかった一言</li>
+      <li><b>04</b>手放したもの</li>
+      <li><b>05</b>最初に買ったもの</li>
+      <li><b>06</b>やめた習慣</li>
+      <li><b>07</b>反対した人</li>
+      <li><b>08</b>たった1人の味方</li>
+      <li><b>09</b>その時の金額</li>
+      <li><b>10</b>眠れた日、眠れなかった日</li>
+      <li><b>11</b>元に戻りそうになった日</li>
+      <li><b>12</b>誰にも言わなかったこと</li>
+      <li><b>13</b>あとから知った事実</li>
+      <li><b>14</b>今でもできないこと</li>
+      <li><b>15</b>当時の自分に言いたいこと</li>
+      <li><b>16</b>逆に、当時の自分が正しかったこと</li>
+      <li><b>17</b>周りの反応が変わった瞬間</li>
+      <li><b>18</b>持ち物の変化</li>
+      <li><b>19</b>使う言葉の変化</li>
+      <li><b>20</b>同じ状況の人を見たときに思うこと</li>
+    </ul>
+
+    <p>1日2投稿なら10日分。これを3周すれば1か月半が埋まり、しかも<b>3周目のほうが反応が良くなります</b>。読者のなかに文脈が溜まっているからです。反応が良かった角度は、そのまま有料記事の1章になります。</p>
+  </div>
+</section>
+
+<section class="sec" id="s6">
+  <div class="rail">06</div>
+  <div class="col">
+    <h2 class="sh">リプライは、いちばん強い認知装置</h2>
+    <p class="dek">1日30分。ここが「知ってくれる人」を実際に作っている作業です。投稿を書く時間より優先していい。</p>
+
+    <p>リプライ欄は<b>公開の1対1の会話</b>です。相手に届くだけでなく、その会話を第三者が読みます。つまり、リプライは短いエッセイであり、他人の読者に向けた最良の露出でもあります。Threads は返信が伸びの主因になりやすいので、アルゴリズム上も有利に働きます。</p>
+
+    <h3>自分の投稿に来たリプライ</h3>
+    <ul>
+      <li><b>全部返す。</b>例外なし。返信率100%は、しばらく続けると相手に伝わります。</li>
+      <li><b>定型文を使わない。</b>「ありがとうございます!」だけは、返さないのとほぼ同じです。</li>
+      <li><b>相手の言葉を1語そのまま拾う。</b>これが「読んだ証拠」になります。要約せず、相手が使った語を使う。</li>
+      <li><b>自分の具体を1つ足す。</b>同意だけで終わらせない。会話が1往復で終わるか続くかは、ここで決まります。</li>
+    </ul>
+
+    <h3>他人の投稿へ送るリプライ（1日5本）</h3>
+    <div class="craft">
+      <div>
+        <div class="lv">共感だけ／0点</div>
+        <p class="bad"><s>共感しました。私も同じです。</s></p>
+        <p class="good">「戻れなくなった」のところ、私は退職届を出した日ではなく、その3か月後に同僚から電話が来なくなった日でした。</p>
+      </div>
+      <div>
+        <div class="lv">褒めるだけ／0点</div>
+        <p class="bad"><s>素敵な文章ですね、勉強になります。</s></p>
+        <p class="good">最後の一行で止まりました。私もずっと「準備ができてから」と言い続けて、3年たってしまったので。</p>
+      </div>
+    </div>
+    <p>要するに、<b>相手の言葉を1語拾い、自分の具体を1つ置く</b>。この形だけです。褒め言葉も要約も要りません。</p>
+
+    <h4>相手の選び方</h4>
+    <ul>
+      <li><b>フォロワー500〜5,000人</b>の同ジャンルの書き手。ここが最も返信が返り、読者層も重なります。</li>
+      <li>フォロワー数万の人は返信が来ず、露出も埋もれます。優先度は最後。</li>
+      <li><b>同じ人に3回リプライする。</b>1回では認識されません。3回で「よく来る人」になり、そこから相手側があなたの投稿を見に来ます。</li>
+      <li>10人を決めて、その10人を毎週追う。新しい相手を探し続けるより効率が高い。</li>
+    </ul>
+    <em class="note">狙って媚びるのではなく、実際に読んで、実際に自分の具体を出す。相手の読者はそれを見ています。中身のないリプライを量産すると、逆に「絡んでくる人」として記憶されます。記憶されないより悪い状態です。</em>
+  </div>
+</section>
+
+<section class="sec" id="s7">
+  <div class="rail">07</div>
+  <div class="col">
+    <h2 class="sh">note 側で認知を積む</h2>
+    <p class="dek">note は流入プラットフォームとしては弱いが、認知を「定着」させる機能は揃っています。Threads で出会った人を、ここで固定します。</p>
+
+    <h3>やること</h3>
+    <ul>
+      <li><b>プロフィール記事を1本書いて、固定する。</b>note はプロフィール欄が短いので、「私が何者で、何を書いているか」を1記事にして、クリエイターページの先頭に固定表示する。旗（02章の問い）をここで宣言します。</li>
+      <li><b>連載形式にして「次回」を予告する。</b>記事末尾に「次回は◯◯について書きます」の1行。これだけでフォローされる率が変わります。予告したら必ず書く。</li>
+      <li><b>同ジャンルの書き手の記事にコメントする。</b>スキだけでは記憶に残りません。note のコメントは Threads より読まれる密度が高く、1件の重みが大きい。</li>
+      <li><b>お題・コンテストに乗る。</b>note は運営が定期的にお題やコンテストを出し、応募作が公式マガジンや特集で紹介されることがあります。エッセイは相性が良いジャンルで、通常の記事とは別経路の流入が来ます。当たらなくても損はしません。</li>
+      <li><b>ハッシュタグは3〜5個、毎回同じものを使う。</b>タグを固定すると、タグ経由で来た人が「またこの人だ」になります。毎回変えると、この効果が消えます。</li>
+    </ul>
+
+    <h3>スキとフォローの扱い</h3>
+    <p>note 内での相互スキ・相互フォローは、数字は増えますが「知ってくれる人」は増えません。むしろ購入率の分母が汚れて、前回の設計図の<b>切り分け表が使えなくなります</b>。数字が読めなくなるほうが損です。</p>
+  </div>
+</section>
+
+<section class="sec" id="s8">
+  <div class="rail">08</div>
+  <div class="col">
+    <h2 class="sh">3段階と、進んだサイン</h2>
+    <p class="dek">「知られている」は連続量ではなく段階です。今どこにいるかは、来る反応の種類で分かります。</p>
+
+    <ol class="stages">
+      <li>
+        <div class="nm"><b>通過</b><span>PASSING</span></div>
+        <div class="meat">
+          <p>読まれたが、誰が書いたかは残っていない。いいねはここで発生します。フォロワー数はほぼこの層でできています。</p>
+          <p class="sig"><b>サイン：</b>いいねはつくが、リプライが来ない／プロフィールクリックが1%未満</p>
+        </div>
+      </li>
+      <li>
+        <div class="nm"><b>記名</b><span>NAMED</span></div>
+        <div class="meat">
+          <p>「この人の文章だ」と認識された。旗と自分語彙が効き始めた段階。ここに来ないと有料記事は売れません。</p>
+          <p class="sig"><b>サイン：</b>「毎回読んでます」と言われる／同じ人から2回目のリプライ／フォローが投稿単位ではなく人単位で増える</p>
+        </div>
+      </li>
+      <li>
+        <div class="nm"><b>想起</b><span>RECALLED</span></div>
+        <div class="meat">
+          <p>次を待たれている状態。ここまで来ると、有料記事は告知せずに売れ始めます。「知ってくれる人」の完成形です。</p>
+          <p class="sig"><b>サイン：</b>投稿5分以内にリプライが来る／名前で呼ばれる／DMが来る／<b>他人の投稿の中であなたの名前が出る</b></p>
+        </div>
+      </li>
+    </ol>
+
+    <p>いちばん落ちるのは<b>通過 → 記名</b>です。ここを越えるのが旗（02）とフック（03）の役目で、越えるのに必要なのは新しい題材ではなく<b>反復</b>です。同じ問いを、同じ語彙で、20の角度から。</p>
+  </div>
+</section>
+
+<section class="sec" id="s9">
+  <div class="rail">09</div>
+  <div class="col">
+    <h2 class="sh">1日と1週間の型</h2>
+    <p class="dek">投稿を書く時間より、リプライの時間を先に確保します。順番を逆にすると続きません。</p>
+
+    <h4>1日（40分）</h4>
+    <ul>
+      <li><b>15分</b>：自分の投稿に来たリプライへ全返信（相手の言葉を1語拾う＋自分の具体を1つ）</li>
+      <li><b>15分</b>：追っている10人の投稿に、リプライ5本</li>
+      <li><b>10分</b>：20の角度リストから1つ選び、150〜300字を2本書いて投稿</li>
+    </ul>
+
+    <h4>1週間</h4>
+    <ul class="week">
+      <li><b>月〜土</b>上の40分を回す。1日1本は「問い」で閉じる投稿を入れる</li>
+      <li><b>水</b>note に無料記事を1本（伸びた投稿を2,000字に拡張、ハブ記事に追加）</li>
+      <li><b>日</b>5分の計測：週の投稿数／伸びた投稿トップ3／3回以上やりとりした人の数／note のビューと購入</li>
+    </ul>
+
+    <h4>今日やる3つ</h4>
+    <ol>
+      <li>旗を1つ決めて、紙に書いて貼る（02章の手順、30分）</li>
+      <li>名前欄に「〜の人」を追加し、自分語彙を3つ決める（03章、15分）</li>
+      <li>追う10人を選んでリストにする（06章、15分）</li>
+    </ol>
+    <p>この3つは1時間で終わり、以後ずっと効きます。順番はこの通りで、旗が決まる前に投稿を増やしても記憶には残りません。</p>
+  </div>
+</section>
+
+<section class="sec" id="s10">
+  <div class="rail">10</div>
+  <div class="col">
+    <h2 class="sh">やらないこと</h2>
+    <p class="dek">エッセイ書き手が認知づくりで失敗する典型。どれも善意でやってしまうのが厄介です。</p>
+    <ul class="stop">
+      <li><b>有益な情報を発信し始める</b>反応が出ないと、つい「役に立つこと」を書き始めます。ノウハウを語り出した瞬間に、あなたの個は消え、無数の同業者と同じ棚に並びます。エッセイ書き手の資産は情報量ではなく、<b>その人しか持っていない具体</b>です。</li>
+      <li><b>万人に向けて書く</b>「みなさん」と書いた文章は誰にも刺さりません。1人を思い浮かべて、その人にだけ書く。範囲を狭めるほど、結果として遠くまで届きます。</li>
+      <li><b>アイコンと名前を変える</b>認知は視覚から始まります。変えた瞬間に、積み上げた記憶が0に戻ります。少なくとも1年は固定。</li>
+      <li><b>3段目の開示を出し尽くす</b>初日に全部出すと、翌週から盛るしかなくなります。1投稿に1つまで。在庫として管理する。</li>
+      <li><b>相互フォロー・相互スキ</b>数字は増え、知ってくれる人は増えず、判定に使う数字が壊れます。三重に損です。</li>
+      <li><b>反応がない投稿を消す</b>伸びなかった投稿も、記名段階の読者は読んでいます。消すと文脈が切れます。残す。</li>
+      <li><b>複数SNSに同時展開する</b>Threads はこのジャンルで最も相性が良い場所です。1つで想起段階まで到達してから、次を考える。</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>この別冊は、前回の動線設計図の「層0（Threads の投稿）」と「層1（プロフィール）」を掘ったものです。動線が整っていても知ってくれる人がいなければ売れず、知ってくれる人がいても動線がなければ買えません。両方必要です。</p>
+  <p>最初に測る数字は1つだけ。<b>今週、3回以上やりとりした人は何人か。</b>これが0の週は、投稿を何本書いても認知は増えていません。</p>
+</footer>
+
+</div>
